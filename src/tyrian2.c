@@ -59,22 +59,22 @@ inline static void blit_enemy( SDL_Surface *surface, unsigned int i, signed int 
 boss_bar_t boss_bar[2];
 
 /* Level Event Data */
-JE_boolean quit, loadLevelOk;
+bool quit, loadLevelOk;
 
 struct JE_EventRecType eventRec[EVENT_MAXIMUM]; /* [1..eventMaximum] */
-JE_word levelEnemyMax;
-JE_word levelEnemyFrequency;
-JE_word levelEnemy[40]; /* [1..40] */
+Uint16 levelEnemyMax;
+Uint16 levelEnemyFrequency;
+Uint16 levelEnemy[40]; /* [1..40] */
 
 char tempStr[31];
 
 /* Data used for ItemScreen procedure to indicate items available */
-JE_byte itemAvail[9][10]; /* [1..9, 1..10] */
-JE_byte itemAvailMax[9]; /* [1..9] */
+Uint8 itemAvail[9][10]; /* [1..9, 1..10] */
+Uint8 itemAvailMax[9]; /* [1..9] */
 
 void JE_starShowVGA( void )
 {
-	JE_byte *src;
+	Uint8 *src;
 	Uint8 *s = NULL; /* screen pointer, 8-bit specific */
 
 	int x, y, lightx, lighty, lightdist;
@@ -504,8 +504,8 @@ enemy_still_exists:
 										aim += difficultyLevel - 2;
 									}
 
-									JE_word target_x = player[0].x;
-									JE_word target_y = player[0].y;
+									Uint16 target_x = player[0].x;
+									Uint16 target_y = player[0].y;
 
 									if (twoPlayerMode)
 									{
@@ -1438,10 +1438,10 @@ level_loop:
 		{
 			bool is_special = false;
 			int tempShotX = 0, tempShotY = 0;
-			JE_byte chain;
-			JE_byte playerNum;
-			JE_word tempX2, tempY2;
-			JE_integer damage;
+			Uint8 chain;
+			Uint8 playerNum;
+			Uint16 tempX2, tempY2;
+			Sint16 damage;
 			
 			if (!player_shot_move_and_draw(z, &is_special, &tempShotX, &tempShotY, &damage, &temp2, &chain, &playerNum, &tempX2, &tempY2))
 			{
@@ -2100,7 +2100,7 @@ draw_player_shot_loop_end:
 		sprintf(buffer, "Enemies onscreen = %d", enemyOnScreen);
 		JE_outText(VGAScreen, 30, 90, buffer, 6, 0);
 
-		debugHist = debugHist + abs((JE_longint)debugTime - (JE_longint)lastDebugTime);
+		debugHist = debugHist + abs((Sint32)debugTime - (Sint32)lastDebugTime);
 		debugHistCount++;
 		sprintf(tempStr, "%2.3f", 1000.0f / roundf(debugHist / debugHistCount));
 		sprintf(buffer, "X:%d Y:%-5d  %s FPS  %d %d %d %d", (mapX - 1) * 12 + player[0].x, curLoc, tempStr, player[0].x_velocity, player[0].y_velocity, player[0].x, player[0].y);
@@ -2111,7 +2111,7 @@ draw_player_shot_loop_end:
 	if (displayTime > 0)
 	{
 		displayTime--;
-		JE_outTextAndDarken(VGAScreen, 90, 10, miscText[59], 15, (JE_byte)flash - 8, FONT_SHAPES);
+		JE_outTextAndDarken(VGAScreen, 90, 10, miscText[59], 15, (Uint8)flash - 8, FONT_SHAPES);
 		flash += flashChange;
 		if (flash > 4 || flash == 0)
 			flashChange = -flashChange;
@@ -2397,14 +2397,14 @@ void JE_loadMap( void )
 {
 	JE_DanCShape shape;
 
-	JE_word x, y;
-	JE_integer yy;
-	JE_word mapSh[3][128]; /* [1..3, 0..127] */
-	JE_byte *ref[3][128]; /* [1..3, 0..127] */
+	Uint16 x, y;
+	Sint16 yy;
+	Uint16 mapSh[3][128]; /* [1..3, 0..127] */
+	Uint8 *ref[3][128]; /* [1..3, 0..127] */
 	char s[256];
 
-	JE_byte mapBuf[15 * 600]; /* [1..15 * 600] */
-	JE_word bufLoc;
+	Uint8 mapBuf[15 * 600]; /* [1..15 * 600] */
+	Uint16 bufLoc;
 
 	char buffer[256];
 	int i;
@@ -3036,28 +3036,28 @@ new_game:
 	fseek(level_f, lvlPos[(lvlFileNum-1) * 2], SEEK_SET);
 
 	fgetc(level_f); // char_mapFile
-	JE_char char_shapeFile = fgetc(level_f);
-	efread(&mapX,  sizeof(JE_word), 1, level_f);
-	efread(&mapX2, sizeof(JE_word), 1, level_f);
-	efread(&mapX3, sizeof(JE_word), 1, level_f);
+	char char_shapeFile = fgetc(level_f);
+	efread(&mapX,  sizeof(Uint16), 1, level_f);
+	efread(&mapX2, sizeof(Uint16), 1, level_f);
+	efread(&mapX3, sizeof(Uint16), 1, level_f);
 
-	efread(&levelEnemyMax, sizeof(JE_word), 1, level_f);
+	efread(&levelEnemyMax, sizeof(Uint16), 1, level_f);
 	for (x = 0; x < levelEnemyMax; x++)
 	{
-		efread(&levelEnemy[x], sizeof(JE_word), 1, level_f);
+		efread(&levelEnemy[x], sizeof(Uint16), 1, level_f);
 	}
 
-	efread(&maxEvent, sizeof(JE_word), 1, level_f);
+	efread(&maxEvent, sizeof(Uint16), 1, level_f);
 	for (x = 0; x < maxEvent; x++)
 	{
-		efread(&eventRec[x].eventtime, sizeof(JE_word), 1, level_f);
-		efread(&eventRec[x].eventtype, sizeof(JE_byte), 1, level_f);
-		efread(&eventRec[x].eventdat,  sizeof(JE_integer), 1, level_f);
-		efread(&eventRec[x].eventdat2, sizeof(JE_integer), 1, level_f);
-		efread(&eventRec[x].eventdat3, sizeof(JE_shortint), 1, level_f);
-		efread(&eventRec[x].eventdat5, sizeof(JE_shortint), 1, level_f);
-		efread(&eventRec[x].eventdat6, sizeof(JE_shortint), 1, level_f);
-		efread(&eventRec[x].eventdat4, sizeof(JE_byte), 1, level_f);
+		efread(&eventRec[x].eventtime, sizeof(Uint16), 1, level_f);
+		efread(&eventRec[x].eventtype, sizeof(Uint8), 1, level_f);
+		efread(&eventRec[x].eventdat,  sizeof(Sint16), 1, level_f);
+		efread(&eventRec[x].eventdat2, sizeof(Sint16), 1, level_f);
+		efread(&eventRec[x].eventdat3, sizeof(Sint8), 1, level_f);
+		efread(&eventRec[x].eventdat5, sizeof(Sint8), 1, level_f);
+		efread(&eventRec[x].eventdat6, sizeof(Sint8), 1, level_f);
+		efread(&eventRec[x].eventdat4, sizeof(Uint8), 1, level_f);
 	}
 	eventRec[x].eventtime = 65500;  /*Not needed but just in case*/
 
@@ -3066,7 +3066,7 @@ new_game:
 	/*debuginfo('Loading Map');*/
 
 	/* MAP SHAPE LOOKUP TABLE - Each map is directly after level */
-	efread(mapSh, sizeof(JE_word), sizeof(mapSh) / sizeof(JE_word), level_f);
+	efread(mapSh, sizeof(Uint16), sizeof(mapSh) / sizeof(Uint16), level_f);
 	for (temp = 0; temp < 3; temp++)
 	{
 		for (temp2 = 0; temp2 < 128; temp2++)
@@ -3081,12 +3081,12 @@ new_game:
 
 	for (int z = 0; z < 600; z++)
 	{
-		JE_boolean shapeBlank = fgetc(shpFile);
+		bool shapeBlank = fgetc(shpFile);
 
 		if (shapeBlank)
 			memset(shape, 0, sizeof(shape));
 		else
-			efread(shape, sizeof(JE_byte), sizeof(shape), shpFile);
+			efread(shape, sizeof(Uint8), sizeof(shape), shpFile);
 
 		/* Match 1 */
 		for (int x = 0; x <= 71; ++x)
@@ -3095,7 +3095,7 @@ new_game:
 			{
 				memcpy(megaData1.shapes[x].sh, shape, sizeof(JE_DanCShape));
 
-				ref[0][x] = (JE_byte *)megaData1.shapes[x].sh;
+				ref[0][x] = (Uint8 *)megaData1.shapes[x].sh;
 			}
 		}
 
@@ -3114,7 +3114,7 @@ new_game:
 							y = 0;
 
 					megaData2.shapes[x].fill = y;
-					ref[1][x] = (JE_byte *)megaData2.shapes[x].sh;
+					ref[1][x] = (Uint8 *)megaData2.shapes[x].sh;
 				}
 				else
 				{
@@ -3138,7 +3138,7 @@ new_game:
 							y = 0;
 
 					megaData3.shapes[x].fill = y;
-					ref[2][x] = (JE_byte *)megaData3.shapes[x].sh;
+					ref[2][x] = (Uint8 *)megaData3.shapes[x].sh;
 				}
 				else
 				{
@@ -3150,7 +3150,7 @@ new_game:
 
 	fclose(shpFile);
 
-	efread(mapBuf, sizeof(JE_byte), 14 * 300, level_f);
+	efread(mapBuf, sizeof(Uint8), 14 * 300, level_f);
 	bufLoc = 0;              /* MAP NUMBER 1 */
 	for (y = 0; y < 300; y++)
 	{
@@ -3161,7 +3161,7 @@ new_game:
 		}
 	}
 
-	efread(mapBuf, sizeof(JE_byte), 14 * 600, level_f);
+	efread(mapBuf, sizeof(Uint8), 14 * 600, level_f);
 	bufLoc = 0;              /* MAP NUMBER 2 */
 	for (y = 0; y < 600; y++)
 	{
@@ -3172,7 +3172,7 @@ new_game:
 		}
 	}
 
-	efread(mapBuf, sizeof(JE_byte), 15 * 600, level_f);
+	efread(mapBuf, sizeof(Uint8), 15 * 600, level_f);
 	bufLoc = 0;              /* MAP NUMBER 3 */
 	for (y = 0; y < 600; y++)
 	{
@@ -3194,7 +3194,7 @@ new_game:
 	/* End of find loop for LEVEL??.DAT */
 }
 
-bool JE_titleScreen( JE_boolean animate )
+bool JE_titleScreen( bool animate )
 {
 	bool quit = false;
 
@@ -3206,12 +3206,12 @@ bool JE_titleScreen( JE_boolean animate )
 
 	unsigned int arcade_code_i[SA_ENGAGE] = { 0 };
 
-	JE_word waitForDemo;
-	JE_byte menu = 0;
-	JE_boolean redraw = true,
+	Uint16 waitForDemo;
+	Uint8 menu = 0;
+	bool redraw = true,
 	           fadeIn = false;
 
-	JE_word temp; /* JE_byte temp; from varz.h will overflow in for loop */
+	Uint16 temp; /* Uint8 temp; from varz.h will overflow in for loop */
 
 	play_demo = false;
 	stopped_demo = false;
@@ -3752,7 +3752,7 @@ uint JE_makeEnemy( struct JE_SingleEnemyType *enemy, Uint16 eDatI, Sint16 unique
 {
 	uint avail;
 
-	JE_byte shapeTableI;
+	Uint8 shapeTableI;
 
 	if (superArcadeMode != SA_NONE && eDatI == 534)
 		eDatI = 533;
@@ -4022,7 +4022,7 @@ uint JE_makeEnemy( struct JE_SingleEnemyType *enemy, Uint16 eDatI, Sint16 unique
 	return avail;
 }
 
-void JE_createNewEventEnemy( JE_byte enemyTypeOfs, JE_word enemyOffset, Sint16 uniqueShapeTableI )
+void JE_createNewEventEnemy( Uint8 enemyTypeOfs, Uint16 enemyOffset, Sint16 uniqueShapeTableI )
 {
 	int i;
 
@@ -4093,9 +4093,9 @@ void JE_createNewEventEnemy( JE_byte enemyTypeOfs, JE_word enemyOffset, Sint16 u
 	enemy[b-1].fixedmovey = eventRec[eventLoc-1].eventdat6;
 }
 
-void JE_eventJump( JE_word jump )
+void JE_eventJump( Uint16 jump )
 {
-	JE_word tempW;
+	Uint16 tempW;
 
 	if (jump == 65535)
 	{
@@ -4115,7 +4115,7 @@ void JE_eventJump( JE_word jump )
 	eventLoc = tempW - 1;
 }
 
-bool JE_searchFor/*enemy*/( JE_byte PLType, JE_byte* out_index )
+bool JE_searchFor/*enemy*/( Uint8 PLType, Uint8* out_index )
 {
 	int found_id = -1;
 
@@ -4872,7 +4872,7 @@ void JE_eventSystem( void )
 		break;
 
 	case 71:
-		if (((((intptr_t)mapYPos - (intptr_t)&megaData1.mainmap) / sizeof(JE_byte *)) * 2) <= (unsigned)eventRec[eventLoc-1].eventdat2)
+		if (((((intptr_t)mapYPos - (intptr_t)&megaData1.mainmap) / sizeof(Uint8 *)) * 2) <= (unsigned)eventRec[eventLoc-1].eventdat2)
 		{
 			JE_eventJump(eventRec[eventLoc-1].eventdat);
 		}
@@ -4922,7 +4922,7 @@ void JE_eventSystem( void )
 
 		if (temp_no_clue)
 		{
-			JE_byte enemy_i;
+			Uint8 enemy_i;
 			do
 			{
 				temp = (mt_rand() % (eventRec[eventLoc-1].eventdat2 + 1 - eventRec[eventLoc-1].eventdat)) + eventRec[eventLoc-1].eventdat;
@@ -5078,7 +5078,7 @@ void JE_whoa( void )
 	levelWarningLines = 4;
 }
 
-static void JE_barX( JE_word x1, JE_word y1, JE_word x2, JE_word y2, JE_byte col )
+static void JE_barX( Uint16 x1, Uint16 y1, Uint16 x2, Uint16 y2, Uint8 col )
 {
 	fill_rectangle_xy(VGAScreen, x1, y1,     x2, y1,     col + 1);
 	fill_rectangle_xy(VGAScreen, x1, y1 + 1, x2, y2 - 1, col    );

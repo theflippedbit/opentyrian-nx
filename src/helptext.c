@@ -29,7 +29,7 @@
 #include <string.h>
 
 
-const JE_byte menuHelp[MENU_MAX][11] = /* [1..maxmenu, 1..11] */
+const Uint8 menuHelp[MENU_MAX][11] = /* [1..maxmenu, 1..11] */
 {
 	{  1, 34,  2,  3,  4,  5,                  0, 0, 0, 0, 0 },
 	{  6,  7,  8,  9, 10, 11, 11, 12,                0, 0, 0 },
@@ -47,10 +47,10 @@ const JE_byte menuHelp[MENU_MAX][11] = /* [1..maxmenu, 1..11] */
 	{  4, 34,  3,  5,                    0, 0, 0, 0, 0, 0, 0 }
 };
 
-JE_byte verticalHeight = 7;
-JE_byte helpBoxColor = 12;
-JE_byte helpBoxBrightness = 1;
-JE_byte helpBoxShadeType = FULL_SHADE;
+Uint8 verticalHeight = 7;
+Uint8 helpBoxColor = 12;
+Uint8 helpBoxBrightness = 1;
+Uint8 helpBoxShadeType = FULL_SHADE;
 
 char helpTxt[39][231];                                                   /* [1..39] of string [230] */
 char pName[21][16];                                                      /* [1..21] of string [15] */
@@ -115,8 +115,8 @@ void skip_pascal_string( FILE *f )
 
 void JE_helpBox( SDL_Surface *screen,  int x, int y, const char *message, unsigned int boxwidth )
 {
-	JE_byte startpos, endpos, pos;
-	JE_boolean endstring;
+	Uint8 startpos, endpos, pos;
+	bool endstring;
 
 	char substring[256];
 
@@ -182,7 +182,7 @@ void JE_loadHelpText( void )
 #endif
 	
 	FILE *f = dir_fopen_die(data_dir(), "tyrian.hdt", "rb");
-	efread(&episode1DataLoc, sizeof(JE_longint), 1, f);
+	efread(&episode1DataLoc, sizeof(Sint32), 1, f);
 
 	/*Online Help*/
 	skip_pascal_string(f);

@@ -57,15 +57,15 @@ bool button[4];
 
 #define MAX_PAGE 8
 #define TOPICS 6
-const JE_byte topicStart[TOPICS] = { 0, 1, 2, 3, 7, 255 };
+const Uint8 topicStart[TOPICS] = { 0, 1, 2, 3, 7, 255 };
 
-JE_shortint constantLastX;
-JE_word textErase;
-JE_word upgradeCost;
-JE_word downgradeCost;
-JE_boolean performSave;
-JE_boolean jumpSection;
-JE_boolean useLastBank; /* See if I want to use the last 16 colors for DisplayText */
+Sint8 constantLastX;
+Uint16 textErase;
+Uint16 upgradeCost;
+Uint16 downgradeCost;
+bool performSave;
+bool jumpSection;
+bool useLastBank; /* See if I want to use the last 16 colors for DisplayText */
 
 bool pause_pressed = false, ingamemenu_pressed = false;
 
@@ -79,13 +79,13 @@ void JE_drawTextWindow( const char *text )
 	JE_outText(VGAScreenSeg, 20, 190, text, 0, 4);
 }
 
-void JE_outCharGlow( JE_word x, JE_word y, const char *s )
+void JE_outCharGlow( Uint16 x, Uint16 y, const char *s )
 {
-	JE_integer maxloc, loc, z;
-	JE_shortint glowcol[60]; /* [1..60] */
-	JE_shortint glowcolc[60]; /* [1..60] */
-	JE_word textloc[60]; /* [1..60] */
-	JE_byte bank;
+	Sint16 maxloc, loc, z;
+	Sint8 glowcol[60]; /* [1..60] */
+	Sint8 glowcolc[60]; /* [1..60] */
+	Uint16 textloc[60]; /* [1..60] */
+	Uint8 bank;
 
 	setjasondelay2(1);
 
@@ -185,10 +185,10 @@ void JE_drawPortConfigButtons( void ) // rear weapon pattern indicator
 	}
 }
 
-void JE_helpSystem( JE_byte startTopic )
+void JE_helpSystem( Uint8 startTopic )
 {
-	JE_integer page, lastPage = 0;
-	JE_byte menu;
+	Sint16 page, lastPage = 0;
+	Uint8 menu;
 
 	page = topicStart[startTopic-1];
 
@@ -218,7 +218,7 @@ void JE_helpSystem( JE_byte startTopic )
 
 		if (page > 0)
 		{
-			JE_char buf[128];
+			char buf[128];
 
 			sprintf(buf, "%s %d", miscText[24], page-topicStart[temp2]+1);
 			JE_outText(VGAScreen, 10, 192, buf, 13, 5);
@@ -444,7 +444,7 @@ long weapon_upgrade_cost( long base_cost, unsigned int power )
 	return base_cost * temp;
 }
 
-ulong JE_getCost( JE_byte itemType, JE_word itemNum )
+ulong JE_getCost( Uint8 itemType, Uint16 itemNum )
 {
 	long cost = 0;
 
@@ -480,11 +480,11 @@ ulong JE_getCost( JE_byte itemType, JE_word itemNum )
 
 void JE_loadScreen( void )
 {
-	JE_boolean quit;
-	JE_byte sel, screen, min = 0, max = 0;
+	bool quit;
+	Uint8 sel, screen, min = 0, max = 0;
 	char *tempstr;
 	char *tempstr2;
-	JE_boolean mal_str = false;
+	bool mal_str = false;
 	int len;
 
 	tempstr = NULL;
@@ -698,7 +698,7 @@ ulong JE_totalScore( const Player *this_player )
 	return temp;
 }
 
-JE_longint JE_getValue( JE_byte itemType, JE_word itemNum )
+Sint32 JE_getValue( Uint8 itemType, Uint16 itemNum )
 {
 	long value = 0;
 
@@ -860,7 +860,7 @@ void JE_initPlayerData( void )
 
 void JE_sortHighScores( void )
 {
-	JE_byte x;
+	Uint8 x;
 
 	temp = 0;
 	for (x = 0; x < 6; x++)
@@ -1004,7 +1004,7 @@ void JE_highScoreScreen( void )
 
 }
 
-void JE_gammaCorrect_func( JE_byte *col, JE_real r )
+void JE_gammaCorrect_func( Uint8 *col, float r )
 {
 	int temp = roundf(*col * r);
 	if (temp > 255)
@@ -1014,10 +1014,10 @@ void JE_gammaCorrect_func( JE_byte *col, JE_real r )
 	*col = temp;
 }
 
-void JE_gammaCorrect( Palette *colorBuffer, JE_byte gamma )
+void JE_gammaCorrect( Palette *colorBuffer, Uint8 gamma )
 {
 	int x;
-	JE_real r = 1 + (JE_real)gamma / 10;
+	float r = 1 + (float)gamma / 10;
 
 	for (x = 0; x < 256; x++)
 	{
@@ -1027,7 +1027,7 @@ void JE_gammaCorrect( Palette *colorBuffer, JE_byte gamma )
 	}
 }
 
-JE_boolean JE_gammaCheck( void )
+bool JE_gammaCheck( void )
 {
 	bool temp = keysactive[SDL_SCANCODE_F11] != 0;
 	if (temp)
@@ -1161,16 +1161,16 @@ void JE_doInGameSetup( void )
 	//skipStarShowVGA = true;
 }
 
-JE_boolean JE_inGameSetup( void )
+bool JE_inGameSetup( void )
 {
 	SDL_Surface *temp_surface = VGAScreen;
 	VGAScreen = VGAScreenSeg; /* side-effect of game_screen */
 
-	JE_boolean returnvalue = false;
+	bool returnvalue = false;
 
-	const JE_byte help[6] /* [1..6] */ = {15, 15, 28, 29, 26, 27};
-	JE_byte  sel;
-	JE_boolean quit;
+	const Uint8 help[6] /* [1..6] */ = {15, 15, 28, 29, 26, 27};
+	Uint8  sel;
+	bool quit;
 
 	bool first = true;
 
@@ -1514,9 +1514,9 @@ void JE_highScoreCheck( void )
 			{
 				/* Enter Thy name */
 
-				JE_byte flash = 8 * 16 + 10;
-				JE_boolean fadein = true;
-				JE_boolean quit = false, cancel = false;
+				Uint8 flash = 8 * 16 + 10;
+				bool fadein = true;
+				bool quit = false, cancel = false;
 				char stemp[30], tempstr[30];
 				char buffer[256];
 
@@ -1847,9 +1847,9 @@ bool read_demo_keys( void )
 }
 
 /*Street Fighter codes*/
-void JE_SFCodes( JE_byte playerNum_, JE_integer PX_, JE_integer PY_, JE_integer mouseX_, JE_integer mouseY_ )
+void JE_SFCodes( Uint8 playerNum_, Sint16 PX_, Sint16 PY_, Sint16 mouseX_, Sint16 mouseY_ )
 {
-	JE_byte temp, temp2, temp3, temp4, temp5;
+	Uint8 temp, temp2, temp3, temp4, temp5;
 
 	uint ship = player[playerNum_-1].items.ship;
 
@@ -1932,7 +1932,7 @@ void JE_SFCodes( JE_byte playerNum_, JE_integer PX_, JE_integer PY_, JE_integer 
 
 void JE_sort( void )
 {
-	JE_byte a, b;
+	Uint8 a, b;
 
 	for (a = 0; a < 2; a++)
 	{
@@ -1940,9 +1940,9 @@ void JE_sort( void )
 		{
 			if (saveFiles[temp + a].highScore1 < saveFiles[temp + b].highScore1)
 			{
-				JE_longint tempLI;
+				Sint32 tempLI;
 				char tempStr[30];
-				JE_byte tempByte;
+				Uint8 tempByte;
 
 				tempLI = saveFiles[temp + a].highScore1;
 				saveFiles[temp + a].highScore1 = saveFiles[temp + b].highScore1;
@@ -1969,11 +1969,11 @@ void JE_playCredits( void )
 	
 	int lines = 0;
 	
-	JE_byte currentpic = 0, fade = 0;
-	JE_shortint fadechg = 1;
-	JE_byte currentship = 0;
-	JE_integer shipx = 0, shipxwait = 0;
-	JE_shortint shipxc = 0, shipxca = 0;
+	Uint8 currentpic = 0, fade = 0;
+	Sint8 fadechg = 1;
+	Uint8 currentship = 0;
+	Sint16 shipx = 0, shipxwait = 0;
+	Sint8 shipxc = 0, shipxca = 0;
 
 	load_sprites_file(EXTRA_SHAPES, "estsc.shp");
 
@@ -2132,8 +2132,8 @@ void JE_playCredits( void )
 
 void JE_endLevelAni( void )
 {
-	JE_word x, y;
-	JE_byte temp;
+	Uint16 x, y;
+	Uint8 temp;
 	char tempStr[256];
 
 	Sint8 i;
@@ -2296,7 +2296,7 @@ void JE_endLevelAni( void )
 	JE_clr256(VGAScreen);
 }
 
-void JE_drawCube( SDL_Surface * screen, JE_word x, JE_word y, JE_byte filter, JE_byte brightness )
+void JE_drawCube( SDL_Surface * screen, Uint16 x, Uint16 y, Uint8 filter, Uint8 brightness )
 {
 	blit_sprite_dark(screen, x + 4, y + 4, OPTION_SHAPES, 25, false);
 	blit_sprite_dark(screen, x + 3, y + 3, OPTION_SHAPES, 25, false);
@@ -2331,9 +2331,9 @@ bool str_pop_int( char *str, int *val )
 	return success;
 }
 
-void JE_operation( JE_byte slot )
+void JE_operation( Uint8 slot )
 {
-	JE_byte flash;
+	Uint8 flash;
 	char stemp[21];
 	char tempStr[51];
 
@@ -2787,8 +2787,8 @@ void JE_mainKeyboardInput( void )
 
 void JE_pauseGame( void )
 {
-	JE_boolean done = false;
-	JE_word mouseX, mouseY;
+	bool done = false;
+	Uint16 mouseX, mouseY;
 
 	//tempScreenSeg = VGAScreenSeg; // sega000
 	if (!superPause)
@@ -2883,14 +2883,14 @@ void JE_pauseGame( void )
 }
 
 void JE_playerMovement( Player *this_player,
-                        JE_byte inputDevice,
-                        JE_byte playerNum_,
-                        JE_word shipGr_,
+                        Uint8 inputDevice,
+                        Uint8 playerNum_,
+                        Uint16 shipGr_,
                         Sprite2_array *shapes9ptr_,
-                        JE_word *mouseX_, JE_word *mouseY_ )
+                        Uint16 *mouseX_, Uint16 *mouseY_ )
 {
-	JE_integer mouseXC, mouseYC;
-	JE_integer accelXC, accelYC;
+	Sint16 mouseXC, mouseYC;
+	Sint16 accelXC, accelYC;
 
 	if (playerNum_ == 2 || !twoPlayerMode)
 	{
@@ -3315,7 +3315,7 @@ redo:
 					}
 					else
 					{
-						JE_real tempR;
+						float tempR;
 
 						if (abs(this_player->x - *mouseX_) > abs(this_player->y - *mouseY_))
 							tempR = (this_player->x - *mouseX_ > 0) ? M_PI_2 : (M_PI + M_PI_2);
@@ -4113,7 +4113,7 @@ void JE_mainGamePlayerFunctions( void )
 	}
 }
 
-const char *JE_getName( JE_byte pnum )
+const char *JE_getName( Uint8 pnum )
 {
 	if (pnum == thisPlayerNum && network_player_name[0] != '\0')
 		return network_player_name;
@@ -4123,7 +4123,7 @@ const char *JE_getName( JE_byte pnum )
 	return miscText[47 + pnum];
 }
 
-void JE_playerCollide( Player *this_player, JE_byte playerNum_ )
+void JE_playerCollide( Player *this_player, Uint8 playerNum_ )
 {
 	char tempStr[256];
 

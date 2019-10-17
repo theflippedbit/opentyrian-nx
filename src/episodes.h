@@ -36,119 +36,119 @@
 
 typedef struct
 {
-	JE_word     drain;
-	JE_byte     shotrepeat;
-	JE_byte     multi;
-	JE_word     weapani;
-	JE_byte     max;
-	JE_byte     tx, ty, aim;
-	JE_byte     attack[8], del[8]; /* [1..8] */
-	JE_shortint sx[8], sy[8]; /* [1..8] */
-	JE_shortint bx[8], by[8]; /* [1..8] */
-	JE_word     sg[8]; /* [1..8] */
-	JE_shortint acceleration, accelerationx;
-	JE_byte     circlesize;
-	JE_byte     sound;
-	JE_byte     trail;
-	JE_byte     shipblastfilter;
+	Uint16     drain;
+	Uint8     shotrepeat;
+	Uint8     multi;
+	Uint16     weapani;
+	Uint8     max;
+	Uint8     tx, ty, aim;
+	Uint8     attack[8], del[8]; /* [1..8] */
+	Sint8 sx[8], sy[8]; /* [1..8] */
+	Sint8 bx[8], by[8]; /* [1..8] */
+	Uint16     sg[8]; /* [1..8] */
+	Sint8 acceleration, accelerationx;
+	Uint8     circlesize;
+	Uint8     sound;
+	Uint8     trail;
+	Uint8     shipblastfilter;
 } JE_WeaponType;
 
 typedef struct
 {
 	char    name[31]; /* string [30] */
-	JE_byte opnum;
-	JE_word op[2][11]; /* [1..2, 1..11] */
-	JE_word cost;
-	JE_word itemgraphic;
-	JE_word poweruse;
+	Uint8 opnum;
+	Uint16 op[2][11]; /* [1..2, 1..11] */
+	Uint16 cost;
+	Uint16 itemgraphic;
+	Uint16 poweruse;
 } JE_WeaponPortType[PORT_NUM + 1]; /* [0..portnum] */
 
 typedef struct
 {
 	char        name[31]; /* string [30] */
-	JE_word     itemgraphic;
-	JE_byte     power;
-	JE_shortint speed;
-	JE_word     cost;
+	Uint16     itemgraphic;
+	Uint8     power;
+	Sint8 speed;
+	Uint16     cost;
 } JE_PowerType[POWER_NUM + 1]; /* [0..powernum] */
 
 typedef struct
 {
 	char    name[31]; /* string [30] */
-	JE_word itemgraphic;
-	JE_byte pwr;
-	JE_byte stype;
-	JE_word wpn;
+	Uint16 itemgraphic;
+	Uint8 pwr;
+	Uint8 stype;
+	Uint16 wpn;
 } JE_SpecialType[SPECIAL_NUM + 1]; /* [0..specialnum] */
 
 typedef struct
 {
 	char        name[31]; /* string [30] */
-	JE_byte     pwr;
-	JE_word     itemgraphic;
-	JE_word     cost;
-	JE_byte     tr, option;
-	JE_shortint opspd;
-	JE_byte     ani;
-	JE_word     gr[20]; /* [1..20] */
-	JE_byte     wport;
-	JE_word     wpnum;
-	JE_byte     ammo;
-	JE_boolean  stop;
-	JE_byte     icongr;
+	Uint8     pwr;
+	Uint16     itemgraphic;
+	Uint16     cost;
+	Uint8     tr, option;
+	Sint8 opspd;
+	Uint8     ani;
+	Uint16     gr[20]; /* [1..20] */
+	Uint8     wport;
+	Uint16     wpnum;
+	Uint8     ammo;
+	bool  stop;
+	Uint8     icongr;
 } JE_OptionType;
 
 typedef struct
 {
 	char    name[31]; /* string [30] */
-	JE_byte tpwr;
-	JE_byte mpwr;
-	JE_word itemgraphic;
-	JE_word cost;
+	Uint8 tpwr;
+	Uint8 mpwr;
+	Uint16 itemgraphic;
+	Uint16 cost;
 } JE_ShieldType[SHIELD_NUM + 1]; /* [0..shieldnum] */
 
 typedef struct
 {
 	char        name[31]; /* string [30] */
-	JE_word     shipgraphic;
-	JE_word     itemgraphic;
-	JE_byte     ani;
-	JE_shortint spd;
-	JE_byte     dmg;
-	JE_word     cost;
-	JE_byte     bigshipgraphic;
+	Uint16     shipgraphic;
+	Uint16     itemgraphic;
+	Uint8     ani;
+	Sint8 spd;
+	Uint8     dmg;
+	Uint16     cost;
+	Uint8     bigshipgraphic;
 } JE_ShipType[SHIP_NUM + 1]; /* [0..shipnum] */
 
 /* EnemyData */
 typedef struct
 {
-	JE_byte     ani;
-	JE_byte     tur[3]; /* [1..3] */
-	JE_byte     freq[3]; /* [1..3] */
-	JE_shortint xmove;
-	JE_shortint ymove;
-	JE_shortint xaccel;
-	JE_shortint yaccel;
-	JE_shortint xcaccel;
-	JE_shortint ycaccel;
-	JE_integer  startx;
-	JE_integer  starty;
-	JE_shortint startxc;
-	JE_shortint startyc;
-	JE_byte     armor;
-	JE_byte     esize;
-	JE_word     egraphic[20];  /* [1..20] */
-	JE_byte     explosiontype;
-	JE_byte     animate;       /* 0:Not Yet   1:Always   2:When Firing Only */
-	JE_byte     shapebank;     /* See LEVELMAK.DOC */
-	JE_shortint xrev, yrev;
-	JE_word     dgr;
-	JE_shortint dlevel;
-	JE_shortint dani;
-	JE_byte     elaunchfreq;
-	JE_word     elaunchtype;
-	JE_integer  value;
-	JE_word     eenemydie;
+	Uint8     ani;
+	Uint8     tur[3]; /* [1..3] */
+	Uint8     freq[3]; /* [1..3] */
+	Sint8 xmove;
+	Sint8 ymove;
+	Sint8 xaccel;
+	Sint8 yaccel;
+	Sint8 xcaccel;
+	Sint8 ycaccel;
+	Sint16  startx;
+	Sint16  starty;
+	Sint8 startxc;
+	Sint8 startyc;
+	Uint8     armor;
+	Uint8     esize;
+	Uint16     egraphic[20];  /* [1..20] */
+	Uint8     explosiontype;
+	Uint8     animate;       /* 0:Not Yet   1:Always   2:When Firing Only */
+	Uint8     shapebank;     /* See LEVELMAK.DOC */
+	Sint8 xrev, yrev;
+	Uint16     dgr;
+	Sint8 dlevel;
+	Sint8 dani;
+	Uint8     elaunchfreq;
+	Uint16     elaunchtype;
+	Sint16  value;
+	Uint16     eenemydie;
 } JE_EnemyDatType[ENEMY_NUM + 1]; /* [0..enemynum] */
 
 extern JE_WeaponPortType weaponPort;
@@ -159,17 +159,17 @@ extern JE_OptionType options[OPTION_NUM + 1]; /* [0..optionnum] */
 extern JE_ShieldType shields;
 extern JE_SpecialType special;
 extern JE_EnemyDatType enemyDat;
-extern JE_byte initial_episode_num, episodeNum;
-extern JE_boolean episodeAvail[EPISODE_MAX];
+extern Uint8 initial_episode_num, episodeNum;
+extern bool episodeAvail[EPISODE_MAX];
 
 extern char episode_file[13], cube_file[13];
 
-extern JE_longint episode1DataLoc;
-extern JE_boolean bonusLevel;
-extern JE_boolean jumpBackToEpisode1;
+extern Sint32 episode1DataLoc;
+extern bool bonusLevel;
+extern bool jumpBackToEpisode1;
 
 void JE_loadItemDat( void );
-void JE_initEpisode( JE_byte newEpisode );
+void JE_initEpisode( Uint8 newEpisode );
 unsigned int JE_findNextEpisode( void );
 void JE_scanForEpisodes( void );
 

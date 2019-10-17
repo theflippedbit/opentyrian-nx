@@ -24,7 +24,7 @@
 
 // I'm pretty sure the last extra entry is never used.
 PlayerShotDataType playerShotData[MAX_PWEAPON + 1]; /* [1..MaxPWeapon+1] */
-JE_byte shotAvail[MAX_PWEAPON]; /* [1..MaxPWeapon] */   /*0:Avail 1-255:Duration left*/
+Uint8 shotAvail[MAX_PWEAPON]; /* [1..MaxPWeapon] */   /*0:Avail 1-255:Duration left*/
 
 void simulate_player_shots( void )
 {
@@ -88,7 +88,7 @@ void simulate_player_shots( void )
 					}
 				}*/
 
-				JE_word anim_frame = shot->shotGr + shot->shotAni;
+				Uint16 anim_frame = shot->shotGr + shot->shotAni;
 				if (++shot->shotAni == shot->shotAniMax)
 					shot->shotAni = 0;
 
@@ -109,14 +109,14 @@ draw_player_shot_loop_end:
 	}
 }
 
-static const JE_word linkMultiGr[17] /* [0..16] */ =
+static const Uint16 linkMultiGr[17] /* [0..16] */ =
 	{77,221,183,301,1,282,164,202,58,201,163,281,39,300,182,220,77};
-static const JE_word linkSonicGr[17] /* [0..16] */ =
+static const Uint16 linkSonicGr[17] /* [0..16] */ =
 	{85,242,131,303,47,284,150,223,66,224,149,283,9,302,130,243,85};
-static const JE_word linkMult2Gr[17] /* [0..16] */ =
+static const Uint16 linkMult2Gr[17] /* [0..16] */ =
 	{78,299,295,297,2,278,276,280,59,279,275,277,40,296,294,298,78};
 
-void player_shot_set_direction( JE_integer shot_id, uint weapon_id, JE_real direction )
+void player_shot_set_direction( Sint16 shot_id, uint weapon_id, float direction )
 {
 	PlayerShotDataType* shot = &playerShotData[shot_id];
 
@@ -159,9 +159,9 @@ void player_shot_set_direction( JE_integer shot_id, uint weapon_id, JE_real dire
 bool player_shot_move_and_draw(
 		int shot_id, bool* out_is_special,
 		int* out_shotx, int* out_shoty,
-		JE_integer* out_shot_damage, JE_byte* out_blast_filter,
-		JE_byte* out_chain, JE_byte* out_playerNum,
-		JE_word* out_special_radiusw, JE_word* out_special_radiush )
+		Sint16* out_shot_damage, Uint8* out_blast_filter,
+		Uint8* out_chain, Uint8* out_playerNum,
+		Uint16* out_special_radiusw, Uint16* out_special_radiush )
 {
 	PlayerShotDataType* shot = &playerShotData[shot_id];
 
@@ -170,7 +170,7 @@ bool player_shot_move_and_draw(
 	{
 		shot->shotXM += shot->shotXC;
 		shot->shotX += shot->shotXM;
-		JE_integer tmp_shotXM = shot->shotXM;
+		Sint16 tmp_shotXM = shot->shotXM;
 
 		if (shot->shotXM > 100)
 		{
@@ -259,7 +259,7 @@ bool player_shot_move_and_draw(
 			}
 		}
 
-		JE_word sprite_frame = shot->shotGr + shot->shotAni;
+		Uint16 sprite_frame = shot->shotGr + shot->shotAni;
 		if (++shot->shotAni == shot->shotAniMax)
 			shot->shotAni = 0;
 
@@ -302,9 +302,9 @@ bool player_shot_move_and_draw(
 	return true;
 }
 
-JE_integer player_shot_create( JE_word portNum, uint bay_i, JE_word PX, JE_word PY, JE_word mouseX, JE_word mouseY, JE_word wpNum, JE_byte playerNum )
+Sint16 player_shot_create( Uint16 portNum, uint bay_i, Uint16 PX, Uint16 PY, Uint16 mouseX, Uint16 mouseY, Uint16 wpNum, Uint8 playerNum )
 {
-	static const JE_byte soundChannel[11] /* [1..11] */ = {0, 2, 4, 4, 2, 2, 5, 5, 1, 4, 1};
+	static const Uint8 soundChannel[11] /* [1..11] */ = {0, 2, 4, 4, 2, 2, 5, 5, 1, 4, 1};
 
 	// Bounds check
 	if (portNum > PORT_NUM || wpNum <= 0 || wpNum > WEAP_NUM)
@@ -354,11 +354,11 @@ JE_integer player_shot_create( JE_word portNum, uint bay_i, JE_word PX, JE_word 
 		}
 		else
 		{
-			JE_byte circsize = weapon->circlesize;
+			Uint8 circsize = weapon->circlesize;
 
 			if (circsize > 19)
 			{
-				JE_byte circsize_mod20 = circsize % 20;
+				Uint8 circsize_mod20 = circsize % 20;
 				shot->shotCirSizeX = circsize_mod20;
 				shot->shotDevX = circsize_mod20 >> 1;
 
@@ -391,7 +391,7 @@ JE_integer player_shot_create( JE_word portNum, uint bay_i, JE_word PX, JE_word 
 
 		shot->shotBlastFilter = weapon->shipblastfilter;
 
-		JE_integer tmp_by = weapon->by[shotMultiPos[bay_i]-1];
+		Sint16 tmp_by = weapon->by[shotMultiPos[bay_i]-1];
 
 		/*Note: Only front selection used for player shots...*/
 
@@ -404,7 +404,7 @@ JE_integer player_shot_create( JE_word portNum, uint bay_i, JE_word PX, JE_word 
 		shot->shotXM = weapon->sx[shotMultiPos[bay_i]-1];
 
 		// Not sure what this field does exactly.
-		JE_byte del = weapon->del[shotMultiPos[bay_i]-1];
+		Uint8 del = weapon->del[shotMultiPos[bay_i]-1];
 
 		if (del == 121)
 		{
@@ -469,7 +469,7 @@ JE_integer player_shot_create( JE_word portNum, uint bay_i, JE_word PX, JE_word 
 		if (weapon->aim > 5)  /*Guided Shot*/
 		{
 			uint best_dist = 65000;
-			JE_byte closest_enemy = 0;
+			Uint8 closest_enemy = 0;
 			/*Find Closest Enemy*/
 			for (x = 0; x < 100; x++)
 			{

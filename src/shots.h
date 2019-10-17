@@ -21,24 +21,24 @@
 #include "opentyr.h"
 
 typedef struct {
-	JE_integer shotX, shotY, shotXM, shotYM, shotXC, shotYC;
-	JE_boolean shotComplicated;
-	JE_integer shotDevX, shotDirX, shotDevY, shotDirY, shotCirSizeX, shotCirSizeY;
-	JE_byte shotTrail;
-	JE_word shotGr, shotAni, shotAniMax;
+	Sint16 shotX, shotY, shotXM, shotYM, shotXC, shotYC;
+	bool shotComplicated;
+	Sint16 shotDevX, shotDirX, shotDevY, shotDirY, shotCirSizeX, shotCirSizeY;
+	Uint8 shotTrail;
+	Uint16 shotGr, shotAni, shotAniMax;
 	Uint8 shotDmg;
-	JE_byte shotBlastFilter, chainReaction, playerNumber, aimAtEnemy, aimDelay, aimDelayMax;
+	Uint8 shotBlastFilter, chainReaction, playerNumber, aimAtEnemy, aimDelay, aimDelayMax;
 } PlayerShotDataType;
 
 #define MAX_PWEAPON     81 /* 81*/
 extern PlayerShotDataType playerShotData[MAX_PWEAPON + 1];
-extern JE_byte shotAvail[MAX_PWEAPON];
+extern Uint8 shotAvail[MAX_PWEAPON];
 
 /** Used in the shop to show weapon previews. */
 void simulate_player_shots( void );
 
 /** Points shot movement in the specified direction. Used for the turret gun. */
-void player_shot_set_direction( JE_integer shot_id, uint weapon_id, JE_real direction );
+void player_shot_set_direction( Sint16 shot_id, uint weapon_id, float direction );
 
 /** Moves and draws a shot. Does \b not collide it with enemies.
  * \return False if the shot went offscreen, true otherwise.
@@ -46,13 +46,13 @@ void player_shot_set_direction( JE_integer shot_id, uint weapon_id, JE_real dire
 bool player_shot_move_and_draw(
 		int shot_id, bool* out_is_special,
 		int* out_shotx, int* out_shoty,
-		JE_integer* out_shot_damage, JE_byte* out_blast_filter,
-		JE_byte* out_chain, JE_byte* out_playerNum,
-		JE_word* out_special_radiusw, JE_word* out_special_radiush );
+		Sint16* out_shot_damage, Uint8* out_blast_filter,
+		Uint8* out_chain, Uint8* out_playerNum,
+		Uint16* out_special_radiusw, Uint16* out_special_radiush );
 
 /** Creates a player shot. */
-JE_integer player_shot_create( JE_word portnum, uint shot_i, JE_word px, JE_word py,
-                        JE_word mousex, JE_word mousey,
-                        JE_word wpnum, JE_byte playernum );
+Sint16 player_shot_create( Uint16 portnum, uint shot_i, Uint16 px, Uint16 py,
+                        Uint16 mousex, Uint16 mousey,
+                        Uint16 wpnum, Uint8 playernum );
 
 #endif // SHOTS_H

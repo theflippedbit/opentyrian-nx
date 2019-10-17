@@ -20,7 +20,7 @@
 #include "lvlmast.h"
 
 
-const JE_char shapeFile[34] = /* [1..34] */
+const char shapeFile[34] = /* [1..34] */
 {
 	'2', '4', '7', '8', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
 	'O', 'P', 'Q', 'R', 'S', 'T', 'U', '5', '#', 'V', '0', '@', '3', '^', '5', '9'

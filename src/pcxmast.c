@@ -37,11 +37,11 @@ const char *pcxfile[PCX_NUM] = /* [1..PCXnum] */
 	"FIREPICA.PCX"
 };
 
-const JE_byte pcxpal[PCX_NUM] = /* [1..PCXnum] */
+const Uint8 pcxpal[PCX_NUM] = /* [1..PCXnum] */
 { 0, 7, 5, 8, 10, 5, 18, 19, 19, 20, 21, 22, 5};
 
 /*FACEMAX*/
-const JE_byte facepal[12] = /* [1..12] */
+const Uint8 facepal[12] = /* [1..12] */
 { 1, 2, 3, 4, 6, 9, 11, 12, 16, 13, 14, 15};
 
 JE_pcxpostype pcxpos;

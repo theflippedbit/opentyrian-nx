@@ -29,7 +29,7 @@
 
 #include <SDL.h>
 
-void JE_textMenuWait( JE_word *waitTime, JE_boolean doGamma )
+void JE_textMenuWait( Uint16 *waitTime, bool doGamma )
 {
 	set_mouse_position(160, 100);
 	

@@ -20,7 +20,7 @@
 #include "musmast.h"
 
 
-JE_byte songBuy;
+Uint8 songBuy;
 
 const char musicFile[MUSIC_NUM][13] =
 {
@@ -112,5 +112,5 @@ const char musicTitle[MUSIC_NUM][48] =
 	"BEER"
 };
 
-JE_boolean musicFade;
+bool musicFade;
 

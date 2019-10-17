@@ -32,7 +32,7 @@
 #include <stdint.h>
 #include <string.h>
 
-JE_boolean richMode = false, constantPlay = false, constantDie = false;
+bool richMode = false, constantPlay = false, constantDie = false;
 
 /* YKS: Note: LOOT cheat had non letters removed. */
 const char pars[][9] = {

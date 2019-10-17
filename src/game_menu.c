@@ -56,39 +56,39 @@ struct cube_struct
 /*** Globals ***/
 static int joystick_config = 0; // which joystick is being configured in menu
 
-static JE_word yLoc;
-static JE_shortint yChg;
+static Uint16 yLoc;
+static Sint8 yChg;
 static int newPal, curPal, oldPal;
-static JE_boolean quikSave;
-static JE_byte oldMenu;
-static JE_boolean backFromHelp;
-static JE_integer lastDirection;
-static JE_boolean firstMenu9, paletteChanged;
+static bool quikSave;
+static Uint8 oldMenu;
+static bool backFromHelp;
+static Sint16 lastDirection;
+static bool firstMenu9, paletteChanged;
 static JE_MenuChoiceType menuChoices;
-static JE_integer col, colC;
-static JE_byte lastCurSel;
-static JE_integer curMenu;
-static JE_byte curSel[MENU_MAX]; /* [1..maxmenu] */
-static JE_byte curItemType, curItem, cursor;
-static JE_boolean leftPower, rightPower, rightPowerAfford;
-static JE_byte currentCube;
-static JE_boolean keyboardUsed;
+static Sint16 col, colC;
+static Uint8 lastCurSel;
+static Sint16 curMenu;
+static Uint8 curSel[MENU_MAX]; /* [1..maxmenu] */
+static Uint8 curItemType, curItem, cursor;
+static bool leftPower, rightPower, rightPowerAfford;
+static Uint8 currentCube;
+static bool keyboardUsed;
 
-static JE_byte planetAni, planetAniWait;
-static JE_byte currentDotNum, currentDotWait;
-static JE_real navX, navY, newNavX, newNavY;
-static JE_integer tempNavX, tempNavY;
-static JE_byte planetDots[5]; /* [1..5] */
-static JE_integer planetDotX[5][10], planetDotY[5][10]; /* [1..5, 1..10] */
+static Uint8 planetAni, planetAniWait;
+static Uint8 currentDotNum, currentDotWait;
+static float navX, navY, newNavX, newNavY;
+static Sint16 tempNavX, tempNavY;
+static Uint8 planetDots[5]; /* [1..5] */
+static Sint16 planetDotX[5][10], planetDotY[5][10]; /* [1..5, 1..10] */
 static PlayerItems old_items[2];  // TODO: should not be global if possible
 
 static struct cube_struct cube[4];
 
 static const JE_MenuChoiceType menuChoicesDefault = { 7, 9, 8, 0, 0, 11, (SAVE_FILES_NUM / 2) + 2, 0, 0, 6, 4, 6, 7, 5 };
-static const JE_byte menuEsc[MENU_MAX] = { 0, 1, 1, 1, 2, 3, 3, 1, 8, 0, 0, 11, 3, 0 };
-static const JE_byte itemAvailMap[7] = { 1, 2, 3, 9, 4, 6, 7 };
-static const JE_word planetX[21] = { 200, 150, 240, 300, 270, 280, 320, 260, 220, 150, 160, 210, 80, 240, 220, 180, 310, 330, 150, 240, 200 };
-static const JE_word planetY[21] = {  40,  90,  90,  80, 170,  30,  50, 130, 120, 150, 220, 200, 80,  50, 160,  10,  55,  55,  90,  90,  40 };
+static const Uint8 menuEsc[MENU_MAX] = { 0, 1, 1, 1, 2, 3, 3, 1, 8, 0, 0, 11, 3, 0 };
+static const Uint8 itemAvailMap[7] = { 1, 2, 3, 9, 4, 6, 7 };
+static const Uint16 planetX[21] = { 200, 150, 240, 300, 270, 280, 320, 260, 220, 150, 160, 210, 80, 240, 220, 180, 310, 330, 150, 240, 200 };
+static const Uint16 planetY[21] = {  40,  90,  90,  80, 170,  30,  50, 130, 120, 150, 220, 200, 80,  50, 160,  10,  55,  55,  90,  90,  40 };
 static const uint cube_line_chars = sizeof(*cube->text) - 1;
 static const uint cube_line_width = 150;
 
@@ -102,10 +102,10 @@ static uint *playeritem_map( PlayerItems *items, uint i )
 }
 
 
-JE_longint JE_cashLeft( void )
+Sint32 JE_cashLeft( void )
 {
-	JE_longint tempL = player[0].cash;
-	JE_word itemNum = *playeritem_map(&player[0].items, curSel[1] - 2);
+	Sint32 tempL = player[0].cash;
+	Uint16 itemNum = *playeritem_map(&player[0].items, curSel[1] - 2);
 
 	tempL -= JE_getCost(curSel[1], itemNum);
 
@@ -1117,7 +1117,7 @@ void JE_itemScreen( void )
 
 			if ((mouseY > 20) && (mouseX > 170) && (mouseX < 308) && (curMenu != 8))
 			{
-				const JE_byte mouseSelectionY[MENU_MAX] = { 16, 16, 16, 16, 26, 12, 11, 28, 0, 16, 16, 16, 8, 16 };
+				const Uint8 mouseSelectionY[MENU_MAX] = { 16, 16, 16, 16, 26, 12, 11, 28, 0, 16, 16, 16, 8, 16 };
 
 				int selection = (mouseY - 38) / mouseSelectionY[curMenu]+2;
 
@@ -1827,9 +1827,9 @@ bool load_cube( int cube_slot, int cube_index )
 	return true;
 }
 
-void JE_drawItem( JE_byte itemType, JE_word itemNum, JE_word x, JE_word y )
+void JE_drawItem( Uint8 itemType, Uint16 itemNum, Uint16 x, Uint16 y )
 {
-	JE_word tempW = 0;
+	Uint16 tempW = 0;
 
 	if (itemNum > 0)
 	{
@@ -1893,7 +1893,7 @@ void JE_drawMenuHeader( void )
 
 void JE_drawMenuChoices( void )
 {
-	JE_byte x;
+	Uint8 x;
 	char *str;
 
 	for (x = 2; x <= menuChoices[curMenu]; x++)
@@ -1945,7 +1945,7 @@ void JE_drawMenuChoices( void )
 
 void JE_updateNavScreen( void )
 {
-	JE_byte x;
+	Uint8 x;
 
 	/* minor issues: */
 	/* TODO: The scroll to the new planet is too fast, I think */
@@ -2021,12 +2021,12 @@ void JE_updateNavScreen( void )
 	}
 }
 
-void JE_drawLines( SDL_Surface *surface, JE_boolean dark )
+void JE_drawLines( SDL_Surface *surface, bool dark )
 {
-	JE_byte x, y;
-	JE_integer tempX, tempY;
-	JE_integer tempX2, tempY2;
-	JE_word tempW, tempW2;
+	Uint8 x, y;
+	Sint16 tempX, tempY;
+	Sint16 tempX2, tempY2;
+	Uint16 tempW, tempW2;
 
 	tempX2 = -10;
 	tempY2 = 0;
@@ -2081,12 +2081,12 @@ void JE_drawLines( SDL_Surface *surface, JE_boolean dark )
 /* SYN: This was originally PROC drawlines... yes, there were two different procs called
    drawlines in different scopes in the same file. Dammit, Jason, why do you do this to me? */
 
-void JE_drawNavLines( JE_boolean dark )
+void JE_drawNavLines( bool dark )
 {
-	JE_byte x, y;
-	JE_integer tempX, tempY;
-	JE_integer tempX2, tempY2;
-	JE_word tempW, tempW2;
+	Uint8 x, y;
+	Sint16 tempX, tempY;
+	Sint16 tempX2, tempY2;
+	Uint16 tempW, tempW2;
 
 	tempX2 = tempNavX >> 1;
 	tempY2 = tempNavY >> 1;
@@ -2134,8 +2134,8 @@ void JE_drawNavLines( JE_boolean dark )
 
 void JE_drawDots( void )
 {
-	JE_byte x, y;
-	JE_integer tempX, tempY;
+	Uint8 x, y;
+	Sint16 tempX, tempY;
 
 	for (x = 0; x < mapPNum; x++)
 	{
@@ -2149,9 +2149,9 @@ void JE_drawDots( void )
 	}
 }
 
-void JE_drawPlanet( JE_byte planetNum )
+void JE_drawPlanet( Uint8 planetNum )
 {
-	JE_integer tempZ = PGR[planetNum]-1,
+	Sint16 tempZ = PGR[planetNum]-1,
 	           tempX = planetX[planetNum] + 66 - tempNavX - sprite(PLANET_SHAPES, tempZ)->width / 2,
 	           tempY = planetY[planetNum] + 85 - tempNavY - sprite(PLANET_SHAPES, tempZ)->height / 2;
 
@@ -2240,9 +2240,9 @@ void JE_initWeaponView( void )
 
 void JE_computeDots( void )
 {
-	JE_integer tempX, tempY;
-	JE_longint distX, distY;
-	JE_byte x, y;
+	Sint16 tempX, tempY;
+	Sint32 distX, distY;
+	Uint8 x, y;
 
 	for (x = 0; x < mapPNum; x++)
 	{
@@ -2273,7 +2273,7 @@ void JE_computeDots( void )
 	}
 }
 
-JE_integer JE_partWay( JE_integer start, JE_integer finish, JE_byte dots, JE_byte dist )
+Sint16 JE_partWay( Sint16 start, Sint16 finish, Uint8 dots, Uint8 dist )
 {
 	return (finish - start) / (dots + 2) * (dist + 1) + start;
 }
@@ -2307,7 +2307,7 @@ void JE_doShipSpecs( void )
 void JE_drawMainMenuHelpText( void )
 {
 	char tempStr[67];
-	JE_byte temp;
+	Uint8 temp;
 
 	temp = curSel[curMenu] - 2;
 	if (curMenu == 12) // joystick settings menu help
@@ -2339,7 +2339,7 @@ void JE_drawMainMenuHelpText( void )
 	JE_textShade(VGAScreen, 10, 187, tempStr, 14, 1, DARKEN);
 }
 
-JE_boolean JE_quitRequest( void )
+bool JE_quitRequest( void )
 {
 	bool quit_selected = true, done = false;
 
@@ -2453,7 +2453,7 @@ JE_boolean JE_quitRequest( void )
 	return quit_selected;
 }
 
-void JE_genItemMenu( JE_byte itemNum )
+void JE_genItemMenu( Uint8 itemNum )
 {
 	menuChoices[4] = itemAvailMax[itemAvailMap[itemNum - 2] - 1] + 2;
 
@@ -2521,10 +2521,10 @@ void JE_drawScore( void )
 	}
 }
 
-void JE_menuFunction( JE_byte select )
+void JE_menuFunction( Uint8 select )
 {
-	JE_byte x;
-	JE_word curSelect;
+	Uint8 x;
+	Uint16 curSelect;
 
 	col = 0;
 	colC = -1;

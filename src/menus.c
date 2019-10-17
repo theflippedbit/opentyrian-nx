@@ -54,7 +54,7 @@ bool select_gameplay( void )
 			fade_in = false;
 		}
 
-		JE_word temp = 0;
+		Uint16 temp = 0;
 		JE_textMenuWait(&temp, false);
 
 		if (newkey)
@@ -123,7 +123,7 @@ bool select_episode( void )
 			fade_in = false;
 		}
 
-		JE_word temp = 0;
+		Uint16 temp = 0;
 		JE_textMenuWait(&temp, false);
 
 		if (newkey)
@@ -197,7 +197,7 @@ bool select_difficulty( void )
 			fade_in = false;
 		}
 
-		JE_word temp = 0;
+		Uint16 temp = 0;
 		JE_textMenuWait(&temp, false);
 
 		if (SDL_GetModState() & KMOD_SHIFT)

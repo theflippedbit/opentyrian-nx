@@ -63,7 +63,7 @@ bool xmas_prompt( void )
 		
 		JE_showVGA();
 		
-		JE_word temp = 0;
+		Uint16 temp = 0;
 		JE_textMenuWait(&temp, false);
 		
 		if (newkey)

@@ -53,7 +53,7 @@
 #define LVL_NUM_4 (20 * 2)
 #define LVL_NUM_5 (1 * 2)
 
-extern const JE_char shapeFile[34]; /* [1..34] */
+extern const char shapeFile[34]; /* [1..34] */
 
 #endif /* LVLMAST_H */
 

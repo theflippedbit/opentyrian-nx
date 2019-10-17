@@ -38,53 +38,53 @@
 #define SAVE_FILE_SIZE (SAVE_FILES_SIZE)*/
 
 typedef SDL_Scancode JE_KeySettingType[8]; /* [1..8] */
-typedef JE_byte JE_PItemsType[12]; /* [1..12] */
+typedef Uint8 JE_PItemsType[12]; /* [1..12] */
 
-typedef JE_byte JE_EditorItemAvailType[100]; /* [1..100] */
+typedef Uint8 JE_EditorItemAvailType[100]; /* [1..100] */
 
 typedef struct
 {
-	JE_word       encode;
-	JE_word       level;
+	Uint16       encode;
+	Uint16       level;
 	JE_PItemsType items;
-	JE_longint    score;
-	JE_longint    score2;
+	Sint32    score;
+	Sint32    score2;
 	char          levelName[11]; /* string [9]; */ /* SYN: Added one more byte to match lastLevelName below */
-	JE_char       name[15]; /* [1..14] */ /* SYN: Added extra byte for null */
-	JE_byte       cubes;
-	JE_byte       power[2]; /* [1..2] */
-	JE_byte       episode;
+	char       name[15]; /* [1..14] */ /* SYN: Added extra byte for null */
+	Uint8       cubes;
+	Uint8       power[2]; /* [1..2] */
+	Uint8       episode;
 	JE_PItemsType lastItems;
-	JE_byte       difficulty;
-	JE_byte       secretHint;
-	JE_byte       input1;
-	JE_byte       input2;
-	JE_boolean    gameHasRepeated; /*See if you went from one episode to another*/
-	JE_byte       initialDifficulty;
+	Uint8       difficulty;
+	Uint8       secretHint;
+	Uint8       input1;
+	Uint8       input2;
+	bool    gameHasRepeated; /*See if you went from one episode to another*/
+	Uint8       initialDifficulty;
 
 	/* High Scores - Each episode has both sets of 1&2 player selections - with 3 in each */
-	JE_longint    highScore1,
+	Sint32    highScore1,
 	              highScore2;
 	char          highScoreName[30]; /* string [29] */
-	JE_byte       highScoreDiff;
+	Uint8       highScoreDiff;
 } JE_SaveFileType;
 
 typedef JE_SaveFileType JE_SaveFilesType[SAVE_FILES_NUM]; /* [1..savefilesnum] */
-typedef JE_byte JE_SaveGameTemp[SAVE_FILES_SIZE + 4 + 100]; /* [1..sizeof(savefilestype) + 4 + 100] */
+typedef Uint8 JE_SaveGameTemp[SAVE_FILES_SIZE + 4 + 100]; /* [1..sizeof(savefilestype) + 4 + 100] */
 
-extern const JE_byte cryptKey[10];
+extern const Uint8 cryptKey[10];
 extern const JE_KeySettingType defaultKeySettings;
 extern const char defaultHighScoreNames[34][23];
 extern const char defaultTeamNames[22][25];
 extern const JE_EditorItemAvailType initialItemAvail;
-extern JE_boolean smoothies[9];
-extern JE_byte starShowVGASpecialCode;
-extern JE_word lastCubeMax, cubeMax;
-extern JE_word cubeList[4];
-extern JE_boolean gameHasRepeated;
-extern JE_shortint difficultyLevel, oldDifficultyLevel, initialDifficulty;
+extern bool smoothies[9];
+extern Uint8 starShowVGASpecialCode;
+extern Uint16 lastCubeMax, cubeMax;
+extern Uint16 cubeList[4];
+extern bool gameHasRepeated;
+extern Sint8 difficultyLevel, oldDifficultyLevel, initialDifficulty;
 extern uint power, lastPower, powerAdd;
-extern JE_byte shieldWait, shieldT;
+extern Uint8 shieldWait, shieldT;
 
 enum
 {
@@ -101,34 +101,34 @@ enum
 	SHOT_SPECIAL2
 };
 
-extern JE_byte shotRepeat[11], shotMultiPos[11];
-extern JE_boolean portConfigChange, portConfigDone;
+extern Uint8 shotRepeat[11], shotMultiPos[11];
+extern bool portConfigChange, portConfigDone;
 extern char lastLevelName[11], levelName[11];
-extern JE_byte mainLevel, nextLevel, saveLevel;
+extern Uint8 mainLevel, nextLevel, saveLevel;
 extern JE_KeySettingType keySettings;
-extern JE_shortint levelFilter, levelFilterNew, levelBrightness, levelBrightnessChg;
-extern JE_boolean filtrationAvail, filterActive, filterFade, filterFadeStart;
-extern JE_boolean gameJustLoaded;
-extern JE_boolean galagaMode;
-extern JE_boolean extraGame;
-extern JE_boolean twoPlayerMode, twoPlayerLinked, onePlayerAction, superTyrian, trentWin;
-extern JE_byte superArcadeMode;
-extern JE_byte superArcadePowerUp;
-extern JE_real linkGunDirec;
-extern JE_byte inputDevice[2];
-extern JE_byte secretHint;
-extern JE_byte background3over;
-extern JE_byte background2over;
-extern JE_byte gammaCorrection;
-extern JE_boolean superPause, explosionTransparent, youAreCheating, displayScore, background2, smoothScroll, wild, superWild, starActive, topEnemyOver, skyEnemyOverAll, background2notTransparent;
-extern JE_byte versionNum;
-extern JE_byte fastPlay;
-extern JE_boolean pentiumMode;
-extern JE_byte gameSpeed;
-extern JE_byte processorType;
+extern Sint8 levelFilter, levelFilterNew, levelBrightness, levelBrightnessChg;
+extern bool filtrationAvail, filterActive, filterFade, filterFadeStart;
+extern bool gameJustLoaded;
+extern bool galagaMode;
+extern bool extraGame;
+extern bool twoPlayerMode, twoPlayerLinked, onePlayerAction, superTyrian, trentWin;
+extern Uint8 superArcadeMode;
+extern Uint8 superArcadePowerUp;
+extern float linkGunDirec;
+extern Uint8 inputDevice[2];
+extern Uint8 secretHint;
+extern Uint8 background3over;
+extern Uint8 background2over;
+extern Uint8 gammaCorrection;
+extern bool superPause, explosionTransparent, youAreCheating, displayScore, background2, smoothScroll, wild, superWild, starActive, topEnemyOver, skyEnemyOverAll, background2notTransparent;
+extern Uint8 versionNum;
+extern Uint8 fastPlay;
+extern bool pentiumMode;
+extern Uint8 gameSpeed;
+extern Uint8 processorType;
 extern JE_SaveFilesType saveFiles;
 extern JE_SaveGameTemp saveTemp;
-extern JE_word editorLevel;
+extern Uint16 editorLevel;
 
 extern Config opentyrian_config;
 
@@ -138,8 +138,8 @@ const char *get_user_directory( void );
 void JE_loadConfiguration( void );
 void JE_saveConfiguration( void );
 
-void JE_saveGame( JE_byte slot, const char *name );
-void JE_loadGame( JE_byte slot );
+void JE_saveGame( Uint8 slot, const char *name );
+void JE_loadGame( Uint8 slot );
 
 void JE_encryptSaveTemp( void );
 void JE_decryptSaveTemp( void );

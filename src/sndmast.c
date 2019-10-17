@@ -62,7 +62,7 @@ const char soundTitle[SAMPLE_COUNT][9] = /* [1..soundnum + 9] of string [8] */
 	"VOICE9"
 };
 
-const JE_byte windowTextSamples[9] = /* [1..9] */
+const Uint8 windowTextSamples[9] = /* [1..9] */
 {
 	V_DANGER,
 	V_BOSS,

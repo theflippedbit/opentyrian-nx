@@ -26,7 +26,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-void JE_loadPic(SDL_Surface *screen, JE_byte PCXnumber, JE_boolean storepal )
+void JE_loadPic(SDL_Surface *screen, Uint8 PCXnumber, bool storepal )
 {
 	PCXnumber--;
 
@@ -41,7 +41,7 @@ void JE_loadPic(SDL_Surface *screen, JE_byte PCXnumber, JE_boolean storepal )
 		efread(&temp, sizeof(Uint16), 1, f);
 		for (int i = 0; i < PCX_NUM; i++)
 		{
-			efread(&pcxpos[i], sizeof(JE_longint), 1, f);
+			efread(&pcxpos[i], sizeof(Sint32), 1, f);
 		}
 
 		pcxpos[PCX_NUM] = ftell_eof(f);

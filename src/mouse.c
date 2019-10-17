@@ -29,17 +29,17 @@ bool has_mouse = true;
 #endif
 bool mouse_has_three_buttons = true;
 
-JE_word lastMouseX, lastMouseY;
-JE_byte mouseCursor;
-JE_word mouseX, mouseY, mouseButton;
-JE_word mouseXB, mouseYB;
+Uint16 lastMouseX, lastMouseY;
+Uint8 mouseCursor;
+Uint16 mouseX, mouseY, mouseButton;
+Uint16 mouseXB, mouseYB;
 
-JE_byte mouseGrabShape[24 * 28];                 /* [1..24*28] */
+Uint8 mouseGrabShape[24 * 28];                 /* [1..24*28] */
 
-void JE_drawShapeTypeOne( JE_word x, JE_word y, JE_byte *shape )
+void JE_drawShapeTypeOne( Uint16 x, Uint16 y, Uint8 *shape )
 {
-	JE_word xloop = 0, yloop = 0;
-	JE_byte *p = shape; /* shape pointer */
+	Uint16 xloop = 0, yloop = 0;
+	Uint8 *p = shape; /* shape pointer */
 	Uint8 *s;   /* screen pointer, 8-bit specific */
 	Uint8 *s_limit; /* buffer boundary */
 
@@ -62,10 +62,10 @@ void JE_drawShapeTypeOne( JE_word x, JE_word y, JE_byte *shape )
 	}
 }
 
-void JE_grabShapeTypeOne( JE_word x, JE_word y, JE_byte *shape )
+void JE_grabShapeTypeOne( Uint16 x, Uint16 y, Uint8 *shape )
 {
-	JE_word xloop = 0, yloop = 0;
-	JE_byte *p = shape; /* shape pointer */
+	Uint16 xloop = 0, yloop = 0;
+	Uint8 *p = shape; /* shape pointer */
 	Uint8 *s;   /* screen pointer, 8-bit specific */
 	Uint8 *s_limit; /* buffer boundary */
 
@@ -90,7 +90,7 @@ void JE_grabShapeTypeOne( JE_word x, JE_word y, JE_byte *shape )
 
 void JE_mouseStart( void )
 {
-	const JE_word mouseCursorGr[3] /* [1..3] */ = {273, 275, 277};
+	const Uint16 mouseCursorGr[3] /* [1..3] */ = {273, 275, 277};
 	
 	if (has_mouse)
 	{

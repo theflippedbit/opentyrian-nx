@@ -21,7 +21,7 @@
 
 #include "opentyr.h"
 
-void JE_textMenuWait( JE_word *waitTime, JE_boolean doGamma );
+void JE_textMenuWait( Uint16 *waitTime, bool doGamma );
 
 #endif /* SETUP_H */
 

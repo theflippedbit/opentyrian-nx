@@ -27,10 +27,10 @@
 
 #define DESTRUCT_MODES 5
 
-extern const JE_byte menuHelp[MENU_MAX][11];   /* [1..14, 1..11] */
+extern const Uint8 menuHelp[MENU_MAX][11];   /* [1..14, 1..11] */
 
-extern JE_byte verticalHeight;
-extern JE_byte helpBoxColor, helpBoxBrightness, helpBoxShadeType;
+extern Uint8 verticalHeight;
+extern Uint8 helpBoxColor, helpBoxBrightness, helpBoxShadeType;
 
 #ifdef TYRIAN2000
 #define HELPTEXT_MISCTEXT_COUNT 72

@@ -27,13 +27,13 @@
 
 #define SDL_POLL_INTERVAL 5
 
-extern JE_boolean ESCPressed;
-extern JE_boolean newkey, newmouse, keydown, mousedown;
+extern bool ESCPressed;
+extern bool newkey, newmouse, keydown, mousedown;
 extern SDL_Scancode lastkey_scan;
 extern SDL_Keymod lastkey_mod;
 extern Uint8 lastmouse_but;
 extern Uint16 lastmouse_x, lastmouse_y;
-extern JE_boolean mouse_pressed[3];
+extern bool mouse_pressed[3];
 extern Uint16 mouse_x, mouse_y;
 extern Uint8 keysactive[SDL_NUM_SCANCODES];
 
@@ -43,14 +43,14 @@ extern char last_text[SDL_TEXTINPUTEVENT_TEXT_SIZE];
 extern bool input_grab_enabled;
 
 void flush_events_buffer( void );
-void wait_input( JE_boolean keyboard, JE_boolean mouse, JE_boolean joystick );
-void wait_noinput( JE_boolean keyboard, JE_boolean mouse, JE_boolean joystick );
+void wait_input( bool keyboard, bool mouse, bool joystick );
+void wait_noinput( bool keyboard, bool mouse, bool joystick );
 void init_keyboard( void );
 void input_grab( bool enable );
-JE_word JE_mousePosition( JE_word *mouseX, JE_word *mouseY );
+Uint16 JE_mousePosition( Uint16 *mouseX, Uint16 *mouseY );
 void set_mouse_position( int x, int y );
 
-void service_SDL_events( JE_boolean clear_new );
+void service_SDL_events( bool clear_new );
 
 void sleep_game( void );
 

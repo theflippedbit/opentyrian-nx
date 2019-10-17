@@ -49,17 +49,17 @@ const int font_ascii[256] =
 
 /* shape constants included in newshape.h */
 
-JE_byte textGlowFont, textGlowBrightness = 6;
+Uint8 textGlowFont, textGlowBrightness = 6;
 
-JE_boolean levelWarningDisplay;
-JE_byte levelWarningLines;
+bool levelWarningDisplay;
+Uint8 levelWarningLines;
 char levelWarningText[10][61]; /* [1..10] of string [60] */
-JE_boolean warningRed;
+bool warningRed;
 
-JE_byte warningSoundDelay;
-JE_word armorShipDelay;
-JE_byte warningCol;
-JE_shortint warningColChange;
+Uint8 warningSoundDelay;
+Uint16 armorShipDelay;
+Uint8 warningCol;
+Sint8 warningColChange;
 
 void JE_dString( SDL_Surface * screen, int x, int y, const char *s, unsigned int font )
 {
@@ -192,7 +192,7 @@ void JE_outTextModify( SDL_Surface * screen, int x, int y, const char *s, unsign
 	}
 }
 
-void JE_outTextAdjust( SDL_Surface * screen, int x, int y, const char *s, unsigned int filter, int brightness, unsigned int font, JE_boolean shadow )
+void JE_outTextAdjust( SDL_Surface * screen, int x, int y, const char *s, unsigned int filter, int brightness, unsigned int font, bool shadow )
 {
 	int bright = 0;
 
@@ -285,8 +285,8 @@ void JE_updateWarning( SDL_Surface * screen )
 
 void JE_outTextGlow( SDL_Surface * screen, int x, int y, const char *s )
 {
-	JE_integer z;
-	JE_byte c = 15;
+	Sint16 z;
+	Uint8 c = 15;
 
 	if (warningRed)
 	{

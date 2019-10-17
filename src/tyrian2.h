@@ -37,15 +37,15 @@ boss_bar_t;
 extern boss_bar_t boss_bar[2];
 
 extern char tempStr[31];
-extern JE_byte itemAvail[9][10], itemAvailMax[9];
+extern Uint8 itemAvail[9][10], itemAvailMax[9];
 
-void JE_createNewEventEnemy( JE_byte enemytypeofs, JE_word enemyoffset, Sint16 uniqueShapeTableI );
+void JE_createNewEventEnemy( Uint8 enemytypeofs, Uint16 enemyoffset, Sint16 uniqueShapeTableI );
 
 void JE_doNetwork( void );
 
 uint JE_makeEnemy( struct JE_SingleEnemyType *enemy, Uint16 eDatI, Sint16 uniqueShapeTableI );
 
-void JE_eventJump( JE_word jump );
+void JE_eventJump( Uint16 jump );
 
 void JE_whoa( void );
 
@@ -55,11 +55,11 @@ void JE_starShowVGA( void );
 
 void JE_main( void );
 void JE_loadMap( void );
-bool JE_titleScreen( JE_boolean animate );
+bool JE_titleScreen( bool animate );
 void JE_readTextSync( void );
 void JE_displayText( void );
 
-bool JE_searchFor( JE_byte PLType, JE_byte* out_index );
+bool JE_searchFor( Uint8 PLType, Uint8* out_index );
 void JE_eventSystem( void );
 
 void draw_boss_bar( void );

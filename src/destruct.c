@@ -312,10 +312,10 @@ static bool weaponSystems[MAX_UNITS][MAX_SHOT_TYPES] =
 
 /* More constant configuration settings. */
 /* Music that destruct will play.  You can check out musmast.c to see what is what. */
-static const JE_byte goodsel[14] /*[1..14]*/ = {1, 2, 6, 12, 13, 14, 17, 23, 24, 26, 28, 29, 32, 33};
+static const Uint8 goodsel[14] /*[1..14]*/ = {1, 2, 6, 12, 13, 14, 17, 23, 24, 26, 28, 29, 32, 33};
 
 /* Unit creation.  Need to move this later: Doesn't belong here */
-static JE_byte basetypes[10][11] /*[1..8, 1..11]*/ = /* [0] is amount of units*/
+static Uint8 basetypes[10][11] /*[1..8, 1..11]*/ = /* [0] is amount of units*/
 {
 	{5, UNIT_TANK, UNIT_TANK, UNIT_NUKE, UNIT_DIRT,      UNIT_DIRT,   UNIT_SATELLITE, UNIT_MAGNET, UNIT_LASER,  UNIT_JUMPER, UNIT_HELI},   /*Normal*/
 	{1, UNIT_TANK, UNIT_TANK, UNIT_TANK, UNIT_TANK,      UNIT_TANK,   UNIT_TANK,      UNIT_TANK,   UNIT_TANK,   UNIT_TANK,   UNIT_TANK},   /*Traditional*/
@@ -335,13 +335,13 @@ static const unsigned int baseLookup[MAX_PLAYERS][MAX_MODES] =
 };
 
 
-static const JE_byte GraphicBase[MAX_PLAYERS][MAX_UNITS] =
+static const Uint8 GraphicBase[MAX_PLAYERS][MAX_UNITS] =
 {
 	{  1,   6,  11,  58,  63,  68,  96, 153},
 	{ 20,  25,  30,  77,  82,  87, 115, 172}
 };
 
-static const JE_byte ModeScore[MAX_PLAYERS][MAX_MODES] =
+static const Uint8 ModeScore[MAX_PLAYERS][MAX_MODES] =
 {
 	{1, 0, 0, 5, 0, 1},
 	{1, 0, 5, 0, 1, 1}
@@ -372,7 +372,7 @@ static SDL_Scancode defaultKeyConfig[MAX_PLAYERS][MAX_KEY][MAX_KEY_OPTIONS] =
 
 /*** Globals ***/
 static SDL_Surface *destructTempScreen;
-static JE_boolean destructFirstTime;
+static bool destructFirstTime;
 
 static struct destruct_config_s config = { 40, 20, 20, 40, 10, false, false, {true, false}, {true, false} };
 static struct destruct_player_s destruct_player[MAX_PLAYERS];

@@ -21,7 +21,7 @@
 
 #include "opentyr.h"
 
-extern JE_boolean richMode, constantPlay, constantDie;
+extern bool richMode, constantPlay, constantDie;
 
 void JE_paramCheck( int argc, char *argv[] );
 

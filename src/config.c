@@ -39,7 +39,7 @@
 
 /* Configuration Load/Save handler */
 
-const JE_byte cryptKey[10] = /* [1..10] */
+const Uint8 cryptKey[10] = /* [1..10] */
 {
 	15, 50, 89, 240, 147, 34, 86, 9, 32, 208
 };
@@ -138,61 +138,61 @@ const JE_EditorItemAvailType initialItemAvail =
  */
 
 
-JE_boolean smoothies[9] = /* [1..9] */
+bool smoothies[9] = /* [1..9] */
 { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-JE_byte starShowVGASpecialCode;
+Uint8 starShowVGASpecialCode;
 
 /* CubeData */
-JE_word lastCubeMax, cubeMax;
-JE_word cubeList[4]; /* [1..4] */
+Uint16 lastCubeMax, cubeMax;
+Uint16 cubeList[4]; /* [1..4] */
 
 /* High-Score Stuff */
-JE_boolean gameHasRepeated;  // can only get highscore on first play-through
+bool gameHasRepeated;  // can only get highscore on first play-through
 
 /* Difficulty */
-JE_shortint difficultyLevel, oldDifficultyLevel,
+Sint8 difficultyLevel, oldDifficultyLevel,
             initialDifficulty;  // can only get highscore on initial episode
 
 /* Player Stuff */
 uint    power, lastPower, powerAdd;
-JE_byte shieldWait, shieldT;
+Uint8 shieldWait, shieldT;
 
-JE_byte          shotRepeat[11], shotMultiPos[11];
-JE_boolean       portConfigChange, portConfigDone;
+Uint8          shotRepeat[11], shotMultiPos[11];
+bool       portConfigChange, portConfigDone;
 
 /* Level Data */
 char    lastLevelName[11], levelName[11]; /* string [10] */
-JE_byte mainLevel, nextLevel, saveLevel;   /*Current Level #*/
+Uint8 mainLevel, nextLevel, saveLevel;   /*Current Level #*/
 
 /* Keyboard Junk */
 JE_KeySettingType keySettings;
 
 /* Configuration */
-JE_shortint levelFilter, levelFilterNew, levelBrightness, levelBrightnessChg;
-JE_boolean  filtrationAvail, filterActive, filterFade, filterFadeStart;
+Sint8 levelFilter, levelFilterNew, levelBrightness, levelBrightnessChg;
+bool  filtrationAvail, filterActive, filterFade, filterFadeStart;
 
-JE_boolean gameJustLoaded;
+bool gameJustLoaded;
 
-JE_boolean galagaMode;
+bool galagaMode;
 
-JE_boolean extraGame;
+bool extraGame;
 
-JE_boolean twoPlayerMode, twoPlayerLinked, onePlayerAction, superTyrian;
-JE_boolean trentWin = false;
-JE_byte    superArcadeMode;
+bool twoPlayerMode, twoPlayerLinked, onePlayerAction, superTyrian;
+bool trentWin = false;
+Uint8    superArcadeMode;
 
-JE_byte    superArcadePowerUp;
+Uint8    superArcadePowerUp;
 
-JE_real linkGunDirec;
-JE_byte inputDevice[2] = { 1, 2 }; // 0:any  1:keyboard  2:mouse  3+:joystick
+float linkGunDirec;
+Uint8 inputDevice[2] = { 1, 2 }; // 0:any  1:keyboard  2:mouse  3+:joystick
 
-JE_byte secretHint;
-JE_byte background3over;
-JE_byte background2over;
-JE_byte gammaCorrection;
-JE_boolean superPause = false;
-JE_boolean explosionTransparent,
+Uint8 secretHint;
+Uint8 background3over;
+Uint8 background2over;
+Uint8 gammaCorrection;
+bool superPause = false;
+bool explosionTransparent,
            youAreCheating,
            displayScore,
            background2, smoothScroll, wild, superWild, starActive,
@@ -200,21 +200,21 @@ JE_boolean explosionTransparent,
            skyEnemyOverAll,
            background2notTransparent;
 
-JE_byte soundEffects; // dummy value for config
-JE_byte versionNum;   /* SW 1.0 and SW/Reg 1.1 = 0 or 1
+Uint8 soundEffects; // dummy value for config
+Uint8 versionNum;   /* SW 1.0 and SW/Reg 1.1 = 0 or 1
                        * EA 1.2 = 2 */
 
-JE_byte    fastPlay;
-JE_boolean pentiumMode;
+Uint8    fastPlay;
+bool pentiumMode;
 
 /* Savegame files */
-JE_byte    gameSpeed;
-JE_byte    processorType;  /* 1=386 2=486 3=Pentium Hyper */
+Uint8    gameSpeed;
+Uint8    processorType;  /* 1=386 2=486 3=Pentium Hyper */
 
 JE_SaveFilesType saveFiles; /*array[1..saveLevelnum] of savefiletype;*/
 JE_SaveGameTemp saveTemp;
 
-JE_word editorLevel;   /*Initial value 800*/
+Uint16 editorLevel;   /*Initial value 800*/
 
 Config opentyrian_config;  // implicitly initialized
 
@@ -294,7 +294,7 @@ bool save_opentyrian_config( void )
 	return true;
 }
 
-static void playeritems_to_pitems( JE_PItemsType pItems, PlayerItems *items, JE_byte initial_episode_num )
+static void playeritems_to_pitems( JE_PItemsType pItems, PlayerItems *items, Uint8 initial_episode_num )
 {
 	pItems[0]  = items->weapon[FRONT_WEAPON].id;
 	pItems[1]  = items->weapon[REAR_WEAPON].id;
@@ -310,7 +310,7 @@ static void playeritems_to_pitems( JE_PItemsType pItems, PlayerItems *items, JE_
 	pItems[11] = items->ship;
 }
 
-static void pitems_to_playeritems( PlayerItems *items, JE_PItemsType pItems, JE_byte *initial_episode_num )
+static void pitems_to_playeritems( PlayerItems *items, JE_PItemsType pItems, Uint8 *initial_episode_num )
 {
 	items->weapon[FRONT_WEAPON].id  = pItems[0];
 	items->weapon[REAR_WEAPON].id   = pItems[1];
@@ -327,7 +327,7 @@ static void pitems_to_playeritems( PlayerItems *items, JE_PItemsType pItems, JE_
 	items->ship                     = pItems[11];
 }
 
-void JE_saveGame( JE_byte slot, const char *name )
+void JE_saveGame( Uint8 slot, const char *name )
 {
 	saveFiles[slot-1].initialDifficulty = initialDifficulty;
 	saveFiles[slot-1].gameHasRepeated = gameHasRepeated;
@@ -383,7 +383,7 @@ void JE_saveGame( JE_byte slot, const char *name )
 	JE_saveConfiguration();
 }
 
-void JE_loadGame( JE_byte slot )
+void JE_loadGame( Uint8 slot )
 {
 	superTyrian = false;
 	onePlayerAction = false;
@@ -569,8 +569,8 @@ void JE_setNewGameSpeed( void )
 void JE_encryptSaveTemp( void )
 {
 	JE_SaveGameTemp s3;
-	JE_word x;
-	JE_byte y;
+	Uint16 x;
+	Uint8 y;
 
 	memcpy(&s3, &saveTemp, sizeof(s3));
 
@@ -614,18 +614,18 @@ void JE_encryptSaveTemp( void )
 
 void JE_decryptSaveTemp( void )
 {
-	JE_boolean correct = true;
+	bool correct = true;
 	JE_SaveGameTemp s2;
 	int x;
-	JE_byte y;
+	Uint8 y;
 
 	/* Decrypt save game file */
 	for (x = (SAVE_FILE_SIZE - 1); x >= 0; x--)
 	{
-		s2[x] = (JE_byte)saveTemp[x] ^ (JE_byte)(cryptKey[(x+1) % 10]);
+		s2[x] = (Uint8)saveTemp[x] ^ (Uint8)(cryptKey[(x+1) % 10]);
 		if (x > 0)
 		{
-			s2[x] ^= (JE_byte)saveTemp[x - 1];
+			s2[x] ^= (Uint8)saveTemp[x - 1];
 		}
 
 	}
@@ -728,7 +728,7 @@ void JE_loadConfiguration( void )
 {
 	FILE *fi;
 	int z;
-	JE_byte *p;
+	Uint8 *p;
 	int y;
 	
 	fi = dir_fopen_warn(get_user_directory(), "tyrian.cfg", "rb");
@@ -801,18 +801,18 @@ void JE_loadConfiguration( void )
 		p = saveTemp;
 		for (z = 0; z < SAVE_FILES_NUM; z++)
 		{
-			memcpy(&saveFiles[z].encode, p, sizeof(JE_word)); p += 2;
+			memcpy(&saveFiles[z].encode, p, sizeof(Uint16)); p += 2;
 			saveFiles[z].encode = SDL_SwapLE16(saveFiles[z].encode);
 			
-			memcpy(&saveFiles[z].level, p, sizeof(JE_word)); p += 2;
+			memcpy(&saveFiles[z].level, p, sizeof(Uint16)); p += 2;
 			saveFiles[z].level = SDL_SwapLE16(saveFiles[z].level);
 			
 			memcpy(&saveFiles[z].items, p, sizeof(JE_PItemsType)); p += sizeof(JE_PItemsType);
 			
-			memcpy(&saveFiles[z].score, p, sizeof(JE_longint)); p += 4;
+			memcpy(&saveFiles[z].score, p, sizeof(Sint32)); p += 4;
 			saveFiles[z].score = SDL_SwapLE32(saveFiles[z].score);
 			
-			memcpy(&saveFiles[z].score2, p, sizeof(JE_longint)); p += 4;
+			memcpy(&saveFiles[z].score2, p, sizeof(Sint32)); p += 4;
 			saveFiles[z].score2 = SDL_SwapLE32(saveFiles[z].score2);
 			
 			/* SYN: Pascal strings are prefixed by a byte holding the length! */
@@ -824,33 +824,33 @@ void JE_loadConfiguration( void )
 			memcpy(&saveFiles[z].name, p, 14);
 			p += 14;
 			
-			memcpy(&saveFiles[z].cubes, p, sizeof(JE_byte)); p++;
-			memcpy(&saveFiles[z].power, p, sizeof(JE_byte) * 2); p += 2;
-			memcpy(&saveFiles[z].episode, p, sizeof(JE_byte)); p++;
+			memcpy(&saveFiles[z].cubes, p, sizeof(Uint8)); p++;
+			memcpy(&saveFiles[z].power, p, sizeof(Uint8) * 2); p += 2;
+			memcpy(&saveFiles[z].episode, p, sizeof(Uint8)); p++;
 			memcpy(&saveFiles[z].lastItems, p, sizeof(JE_PItemsType)); p += sizeof(JE_PItemsType);
-			memcpy(&saveFiles[z].difficulty, p, sizeof(JE_byte)); p++;
-			memcpy(&saveFiles[z].secretHint, p, sizeof(JE_byte)); p++;
-			memcpy(&saveFiles[z].input1, p, sizeof(JE_byte)); p++;
-			memcpy(&saveFiles[z].input2, p, sizeof(JE_byte)); p++;
+			memcpy(&saveFiles[z].difficulty, p, sizeof(Uint8)); p++;
+			memcpy(&saveFiles[z].secretHint, p, sizeof(Uint8)); p++;
+			memcpy(&saveFiles[z].input1, p, sizeof(Uint8)); p++;
+			memcpy(&saveFiles[z].input2, p, sizeof(Uint8)); p++;
 			
 			/* booleans were 1 byte in pascal -- working around it */
 			Uint8 temp;
 			memcpy(&temp, p, 1); p++;
 			saveFiles[z].gameHasRepeated = temp != 0;
 			
-			memcpy(&saveFiles[z].initialDifficulty, p, sizeof(JE_byte)); p++;
+			memcpy(&saveFiles[z].initialDifficulty, p, sizeof(Uint8)); p++;
 			
-			memcpy(&saveFiles[z].highScore1, p, sizeof(JE_longint)); p += 4;
+			memcpy(&saveFiles[z].highScore1, p, sizeof(Sint32)); p += 4;
 			saveFiles[z].highScore1 = SDL_SwapLE32(saveFiles[z].highScore1);
 			
-			memcpy(&saveFiles[z].highScore2, p, sizeof(JE_longint)); p += 4;
+			memcpy(&saveFiles[z].highScore2, p, sizeof(Sint32)); p += 4;
 			saveFiles[z].highScore2 = SDL_SwapLE32(saveFiles[z].highScore2);
 			
 			memset(&saveFiles[z].highScoreName, 0, sizeof(saveFiles[z].highScoreName));
 			memcpy(&saveFiles[z].highScoreName, &p[1], *p);
 			p += 30;
 			
-			memcpy(&saveFiles[z].highScoreDiff, p, sizeof(JE_byte)); p++;
+			memcpy(&saveFiles[z].highScoreDiff, p, sizeof(Uint8)); p++;
 		}
 
 		/* SYN: This is truncating to bytes. I have no idea what this is doing or why. */
@@ -895,7 +895,7 @@ void JE_loadConfiguration( void )
 void JE_saveConfiguration( void )
 {
 	FILE *f;
-	JE_byte *p;
+	Uint8 *p;
 	int z;
 
 	p = saveTemp;
@@ -905,18 +905,18 @@ void JE_saveConfiguration( void )
 		memcpy(&tempSaveFile, &saveFiles[z], sizeof(tempSaveFile));
 		
 		tempSaveFile.encode = SDL_SwapLE16(tempSaveFile.encode);
-		memcpy(p, &tempSaveFile.encode, sizeof(JE_word)); p += 2;
+		memcpy(p, &tempSaveFile.encode, sizeof(Uint16)); p += 2;
 		
 		tempSaveFile.level = SDL_SwapLE16(tempSaveFile.level);
-		memcpy(p, &tempSaveFile.level, sizeof(JE_word)); p += 2;
+		memcpy(p, &tempSaveFile.level, sizeof(Uint16)); p += 2;
 		
 		memcpy(p, &tempSaveFile.items, sizeof(JE_PItemsType)); p += sizeof(JE_PItemsType);
 		
 		tempSaveFile.score = SDL_SwapLE32(tempSaveFile.score);
-		memcpy(p, &tempSaveFile.score, sizeof(JE_longint)); p += 4;
+		memcpy(p, &tempSaveFile.score, sizeof(Sint32)); p += 4;
 		
 		tempSaveFile.score2 = SDL_SwapLE32(tempSaveFile.score2);
-		memcpy(p, &tempSaveFile.score2, sizeof(JE_longint)); p += 4;
+		memcpy(p, &tempSaveFile.score2, sizeof(Sint32)); p += 4;
 		
 		/* SYN: Pascal strings are prefixed by a byte holding the length! */
 		memset(p, 0, sizeof(tempSaveFile.levelName));
@@ -928,33 +928,33 @@ void JE_saveConfiguration( void )
 		memcpy(p, &tempSaveFile.name, 14);
 		p += 14;
 		
-		memcpy(p, &tempSaveFile.cubes, sizeof(JE_byte)); p++;
-		memcpy(p, &tempSaveFile.power, sizeof(JE_byte) * 2); p += 2;
-		memcpy(p, &tempSaveFile.episode, sizeof(JE_byte)); p++;
+		memcpy(p, &tempSaveFile.cubes, sizeof(Uint8)); p++;
+		memcpy(p, &tempSaveFile.power, sizeof(Uint8) * 2); p += 2;
+		memcpy(p, &tempSaveFile.episode, sizeof(Uint8)); p++;
 		memcpy(p, &tempSaveFile.lastItems, sizeof(JE_PItemsType)); p += sizeof(JE_PItemsType);
-		memcpy(p, &tempSaveFile.difficulty, sizeof(JE_byte)); p++;
-		memcpy(p, &tempSaveFile.secretHint, sizeof(JE_byte)); p++;
-		memcpy(p, &tempSaveFile.input1, sizeof(JE_byte)); p++;
-		memcpy(p, &tempSaveFile.input2, sizeof(JE_byte)); p++;
+		memcpy(p, &tempSaveFile.difficulty, sizeof(Uint8)); p++;
+		memcpy(p, &tempSaveFile.secretHint, sizeof(Uint8)); p++;
+		memcpy(p, &tempSaveFile.input1, sizeof(Uint8)); p++;
+		memcpy(p, &tempSaveFile.input2, sizeof(Uint8)); p++;
 		
 		/* booleans were 1 byte in pascal -- working around it */
 		Uint8 temp = tempSaveFile.gameHasRepeated != false;
 		memcpy(p, &temp, 1); p++;
 		
-		memcpy(p, &tempSaveFile.initialDifficulty, sizeof(JE_byte)); p++;
+		memcpy(p, &tempSaveFile.initialDifficulty, sizeof(Uint8)); p++;
 		
 		tempSaveFile.highScore1 = SDL_SwapLE32(tempSaveFile.highScore1);
-		memcpy(p, &tempSaveFile.highScore1, sizeof(JE_longint)); p += 4;
+		memcpy(p, &tempSaveFile.highScore1, sizeof(Sint32)); p += 4;
 		
 		tempSaveFile.highScore2 = SDL_SwapLE32(tempSaveFile.highScore2);
-		memcpy(p, &tempSaveFile.highScore2, sizeof(JE_longint)); p += 4;
+		memcpy(p, &tempSaveFile.highScore2, sizeof(Sint32)); p += 4;
 		
 		memset(p, 0, sizeof(tempSaveFile.highScoreName));
 		*p = strlen(tempSaveFile.highScoreName);
 		memcpy(&p[1], &tempSaveFile.highScoreName, *p);
 		p += 30;
 		
-		memcpy(p, &tempSaveFile.highScoreDiff, sizeof(JE_byte)); p++;
+		memcpy(p, &tempSaveFile.highScoreDiff, sizeof(Uint8)); p++;
 	}
 	
 	saveTemp[SIZEOF_SAVEGAMETEMP - 6] = editorLevel >> 8;

@@ -23,18 +23,18 @@
 
 #define SAS (sizeof(JE_ShipsType) - 4)
 
-const JE_byte extraCryptKey[10] = { 58, 23, 16, 192, 254, 82, 113, 147, 62, 99 };
+const Uint8 extraCryptKey[10] = { 58, 23, 16, 192, 254, 82, 113, 147, 62, 99 };
 
-JE_boolean extraAvail;
+bool extraAvail;
 JE_ShipsType extraShips;
 void *extraShapes;
-JE_word extraShapeSize;
+Uint16 extraShapeSize;
 
 void JE_decryptShips( void )
 {
-	JE_boolean correct = true;
+	bool correct = true;
 	JE_ShipsType s2;
-	JE_byte y;
+	Uint8 y;
 	
 	for (int x = SAS - 1; x >= 0; x--)
 	{

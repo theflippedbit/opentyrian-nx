@@ -23,16 +23,16 @@
 JE_LvlPosType lvlPos;
 
 char levelFile[13]; /* string [12] */
-JE_word lvlNum;
+Uint16 lvlNum;
 
 void JE_analyzeLevel( void )
 {
 	FILE *f = dir_fopen_die(data_dir(), levelFile, "rb");
 	
-	efread(&lvlNum, sizeof(JE_word), 1, f);
+	efread(&lvlNum, sizeof(Uint16), 1, f);
 	
 	for (int x = 0; x < lvlNum; x++)
-		efread(&lvlPos[x], sizeof(JE_longint), 1, f);
+		efread(&lvlPos[x], sizeof(Sint32), 1, f);
 	
 	lvlPos[lvlNum] = ftell_eof(f);
 	

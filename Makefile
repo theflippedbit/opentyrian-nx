@@ -31,7 +31,7 @@ include $(DEVKITPRO)/libnx/switch_rules
 #---------------------------------------------------------------------------------
 APP_TITLE	:=	Open Tyrian $(VERSION)
 APP_AUTHOR	:=	Switch Port by CTF
-APP_VERSION	:=	1.0.0
+APP_VERSION	:=	1.0.1
 #---------------------------------------------------------------------------------
 TARGET		:=	opentyrian
 BUILD		:=	build
@@ -47,7 +47,7 @@ ARCH		:=	-march=armv8-a -mtp=soft -fPIE
 CFLAGS		:=	-g -Wall -O2 \
 				-ffast-math \
 				$(ARCH) $(DEFINES)
-CFLAGS  	+=	-D__SWITCH__ $(INCLUDE) `sdl2-config --cflags` -DTYRIAN_DIR='"$(TYRIAN_DIR)"'
+CFLAGS  	+=	-D__SWITCH__ $(INCLUDE) `sdl2-config --cflags` -DTYRIAN_DIR='"$(TYRIAN_DIR)"' -DHG_REV='"v$(APP_VERSION)"'
 CXXFLAGS	:=  $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 ASFLAGS		:=	-g $(ARCH)
 LDFLAGS		:=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)

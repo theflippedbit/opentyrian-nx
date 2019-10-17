@@ -21,8 +21,8 @@
 
 #include "opentyr.h"
 
-void JE_pix( SDL_Surface *surface, int x, int y, JE_byte c );
-void JE_pix3( SDL_Surface *surface, int x, int y, JE_byte c );
+void JE_pix( SDL_Surface *surface, int x, int y, Uint8 c );
+void JE_pix3( SDL_Surface *surface, int x, int y, Uint8 c );
 void JE_rectangle( SDL_Surface *surface, int a, int b, int c, int d, int e );
 
 void fill_rectangle_xy( SDL_Surface *, int x, int y, int x2, int y2, Uint8 color );

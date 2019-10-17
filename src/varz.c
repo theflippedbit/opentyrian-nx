@@ -35,13 +35,13 @@
 #include "vga256d.h"
 #include "video.h"
 
-JE_integer tempDat, tempDat2, tempDat3;
+Sint16 tempDat, tempDat2, tempDat3;
 
-const JE_byte SANextShip[SA + 2] /* [0..SA + 1] */ = { 3, 9, 6, 2, 5, 1, 4, 3, 7 }; // 0 -> 3 -> 2 -> 6 -> 4 -> 5 -> 1 -> 9 -> 7
-const JE_word SASpecialWeapon[SA] /* [1..SA] */  = { 7, 8, 9, 10, 11, 12, 13 };
-const JE_word SASpecialWeaponB[SA] /* [1..SA] */ = {37, 6, 15, 40, 16, 14, 41 };
-const JE_byte SAShip[SA] /* [1..SA] */ = { 3, 1, 5, 10, 2, 11, 12 };
-const JE_word SAWeapon[SA][5] /* [1..SA, 1..5] */ =
+const Uint8 SANextShip[SA + 2] /* [0..SA + 1] */ = { 3, 9, 6, 2, 5, 1, 4, 3, 7 }; // 0 -> 3 -> 2 -> 6 -> 4 -> 5 -> 1 -> 9 -> 7
+const Uint16 SASpecialWeapon[SA] /* [1..SA] */  = { 7, 8, 9, 10, 11, 12, 13 };
+const Uint16 SASpecialWeaponB[SA] /* [1..SA] */ = {37, 6, 15, 40, 16, 14, 41 };
+const Uint8 SAShip[SA] /* [1..SA] */ = { 3, 1, 5, 10, 2, 11, 12 };
+const Uint16 SAWeapon[SA][5] /* [1..SA, 1..5] */ =
 {  /*  R  Bl  Bk  G   P */
 	{  9, 31, 32, 33, 34 },  /* Stealth Ship */
 	{ 19,  8, 22, 41, 34 },  /* StormWind    */
@@ -52,13 +52,13 @@ const JE_word SAWeapon[SA][5] /* [1..SA, 1..5] */ =
 	{ 40, 38, 37, 41, 36 }   /* NortShip Z   */
 };
 
-const JE_byte specialArcadeWeapon[PORT_NUM] /* [1..Portnum] */ =
+const Uint8 specialArcadeWeapon[PORT_NUM] /* [1..Portnum] */ =
 {
 	17,17,18,0,0,0,10,0,0,0,0,0,44,0,10,0,19,0,0,-0,0,0,0,0,0,0,
 	-0,0,0,0,45,0,0,0,0,0,0,0,0,0,0,0
 };
 
-const JE_byte optionSelect[16][3][2] /* [0..15, 1..3, 1..2] */ =
+const Uint8 optionSelect[16][3][2] /* [0..15, 1..3, 1..2] */ =
 {	/*  MAIN    OPT    FRONT */
 	{ { 0, 0},{ 0, 0},{ 0, 0} },  /**/
 	{ { 1, 1},{16,16},{30,30} },  /*Single Shot*/
@@ -78,7 +78,7 @@ const JE_byte optionSelect[16][3][2] /* [0..15, 1..3, 1..2] */ =
 	{ {15,15},{15,16},{15,16} }   /*Post-It*/
 };
 
-const JE_word PGR[21] /* [1..21] */ =
+const Uint16 PGR[21] /* [1..21] */ =
 {
 	4,
 	1,2,3,
@@ -87,19 +87,19 @@ const JE_word PGR[21] /* [1..21] */ =
 	151,151,151,151,73-21,73-21,1,2,4
 	/*151,151,151*/
 };
-const JE_byte PAni[21] /* [1..21] */ = {1,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1};
+const Uint8 PAni[21] /* [1..21] */ = {1,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1};
 
-const JE_word linkGunWeapons[38] /* [1..38] */ =
+const Uint16 linkGunWeapons[38] /* [1..38] */ =
 {
 	0,0,0,0,0,0,0,0,444,445,446,447,0,448,449,0,0,0,0,0,450,451,0,506,0,564,
 	  445,446,447,448,449,445,446,447,448,449,450,451
 };
-const JE_word chargeGunWeapons[38] /* [1..38] */ =
+const Uint16 chargeGunWeapons[38] /* [1..38] */ =
 {
 	0,0,0,0,0,0,0,0,476,458,464,482,0,488,470,0,0,0,0,0,494,500,0,528,0,558,
 	  458,458,458,458,458,458,458,458,458,458,458,458
 };
-const JE_byte randomEnemyLaunchSounds[3] /* [1..3] */ = {13,6,26};
+const Uint8 randomEnemyLaunchSounds[3] /* [1..3] */ = {13,6,26};
 
 /* YKS: Twiddle cheat sheet:
  * 1: UP
@@ -112,7 +112,7 @@ const JE_byte randomEnemyLaunchSounds[3] /* [1..3] */ = {13,6,26};
  * 8: RIGHT+FIRE
  * 9: Release all keys (directions and fire)
  */
-const JE_byte keyboardCombos[26][8] /* [1..26, 1..8] */ =
+const Uint8 keyboardCombos[26][8] /* [1..26, 1..8] */ =
 {
 	{ 2, 1,   2,   5, 137,           0, 0, 0}, /*Invulnerability*/
 	{ 4, 3,   2,   5, 138,           0, 0, 0}, /*Atom Bomb*/
@@ -142,12 +142,12 @@ const JE_byte keyboardCombos[26][8] /* [1..26, 1..8] */ =
 	{ 1, 4,   3,   4,   7, 136,         0, 0}  /*D-Media Protron Drone    */
 };
 
-const JE_byte shipCombosB[21] /* [1..21] */ =
+const Uint8 shipCombosB[21] /* [1..21] */ =
 	{15,16,17,18,19,20,21,22,23,24, 7, 8, 5,25,14, 4, 6, 3, 9, 2,26};
   /*!! SUPER Tyrian !!*/
-const JE_byte superTyrianSpecials[4] /* [1..4] */ = {1,2,4,5};
+const Uint8 superTyrianSpecials[4] /* [1..4] */ = {1,2,4,5};
 
-const JE_byte shipCombos[14][3] /* [0..12, 1..3] */ =
+const Uint8 shipCombos[14][3] /* [0..12, 1..3] */ =
 {
 	{ 5, 4, 7},  /*2nd Player ship*/
 	{ 1, 2, 0},  /*USP Talon*/
@@ -166,39 +166,39 @@ const JE_byte shipCombos[14][3] /* [0..12, 1..3] */ =
 };
 
 /*Street-Fighter Commands*/
-JE_byte SFCurrentCode[2][21]; /* [1..2, 1..21] */
-JE_byte SFExecuted[2]; /* [1..2] */
+Uint8 SFCurrentCode[2][21]; /* [1..2, 1..21] */
+Uint8 SFExecuted[2]; /* [1..2] */
 
 /*Special General Data*/
-JE_byte lvlFileNum;
-JE_word maxEvent, eventLoc;
-/*JE_word maxenemies;*/
-JE_word tempBackMove, explodeMove; /*Speed of background movement*/
-JE_byte levelEnd;
-JE_word levelEndFxWait;
-JE_shortint levelEndWarp;
-JE_boolean endLevel, reallyEndLevel, waitToEndLevel, playerEndLevel,
+Uint8 lvlFileNum;
+Uint16 maxEvent, eventLoc;
+/*Uint16 maxenemies;*/
+Uint16 tempBackMove, explodeMove; /*Speed of background movement*/
+Uint8 levelEnd;
+Uint16 levelEndFxWait;
+Sint8 levelEndWarp;
+bool endLevel, reallyEndLevel, waitToEndLevel, playerEndLevel,
            normalBonusLevelCurrent, bonusLevelCurrent,
            smallEnemyAdjust, readyToEndLevel, quitRequested;
 
-JE_byte newPL[10]; /* [0..9] */ /*Eventsys event 75 parameter*/
-JE_word returnLoc;
-JE_boolean returnActive;
-JE_word galagaShotFreq;
-JE_longint galagaLife;
+Uint8 newPL[10]; /* [0..9] */ /*Eventsys event 75 parameter*/
+Uint16 returnLoc;
+bool returnActive;
+Uint16 galagaShotFreq;
+Sint32 galagaLife;
 
-JE_boolean debug = false; /*Debug Mode*/
+bool debug = false; /*Debug Mode*/
 Uint32 debugTime, lastDebugTime;
-JE_longint debugHistCount;
-JE_real debugHist;
-JE_word curLoc; /*Current Pixel location of background 1*/
+Sint32 debugHistCount;
+float debugHist;
+Uint16 curLoc; /*Current Pixel location of background 1*/
 
-JE_boolean firstGameOver, gameLoaded, enemyStillExploding;
+bool firstGameOver, gameLoaded, enemyStillExploding;
 
 
 /* Destruction Ratio */
-JE_word totalEnemy;
-JE_word enemyKilled;
+Uint16 totalEnemy;
+Uint16 enemyKilled;
 
 /* Shape/Map Data - All in one Segment! */
 struct JE_MegaDataType1 megaData1;
@@ -206,9 +206,9 @@ struct JE_MegaDataType2 megaData2;
 struct JE_MegaDataType3 megaData3;
 
 /* Secret Level Display */
-JE_byte flash;
-JE_shortint flashChange;
-JE_byte displayTime;
+Uint8 flash;
+Sint8 flashChange;
+Uint8 displayTime;
 
 /* Demo Stuff */
 bool play_demo = false, record_demo = false, stopped_demo = false;
@@ -219,83 +219,83 @@ Uint8 demo_keys, next_demo_keys;
 Uint16 demo_keys_wait;
 
 /* Sound Effects Queue */
-JE_byte soundQueue[8]; /* [0..7] */
+Uint8 soundQueue[8]; /* [0..7] */
 
 /*Level Event Data*/
-JE_boolean enemyContinualDamage;
-JE_boolean enemiesActive;
-JE_boolean forceEvents;
-JE_boolean stopBackgrounds;
-JE_byte stopBackgroundNum;
-JE_byte damageRate;  /*Rate at which a player takes damage*/
-JE_boolean background3x1;  /*Background 3 enemies use Background 1 X offset*/
-JE_boolean background3x1b; /*Background 3 enemies moved 8 pixels left*/
+bool enemyContinualDamage;
+bool enemiesActive;
+bool forceEvents;
+bool stopBackgrounds;
+Uint8 stopBackgroundNum;
+Uint8 damageRate;  /*Rate at which a player takes damage*/
+bool background3x1;  /*Background 3 enemies use Background 1 X offset*/
+bool background3x1b; /*Background 3 enemies moved 8 pixels left*/
 
-JE_boolean levelTimer;
-JE_word    levelTimerCountdown;
-JE_word    levelTimerJumpTo;
-JE_boolean randomExplosions;
+bool levelTimer;
+Uint16    levelTimerCountdown;
+Uint16    levelTimerJumpTo;
+bool randomExplosions;
 
-JE_boolean editShip1, editShip2;
+bool editShip1, editShip2;
 
-JE_boolean globalFlags[10]; /* [1..10] */
-JE_byte levelSong;
+bool globalFlags[10]; /* [1..10] */
+Uint8 levelSong;
 
 /* DESTRUCT game */
-JE_boolean loadDestruct;
+bool loadDestruct;
 
 /* MapView Data */
-JE_word mapOrigin, mapPNum;
-JE_byte mapPlanet[5], mapSection[5]; /* [1..5] */
+Uint16 mapOrigin, mapPNum;
+Uint8 mapPlanet[5], mapSection[5]; /* [1..5] */
 
 /* Interface Constants */
-JE_boolean moveTyrianLogoUp;
-JE_boolean skipStarShowVGA;
+bool moveTyrianLogoUp;
+bool skipStarShowVGA;
 
 /*EnemyData*/
 JE_MultiEnemyType enemy;
 JE_EnemyAvailType enemyAvail;  /* values: 0: used, 1: free, 2: secret pick-up */
-JE_word enemyOffset;
-JE_word enemyOnScreen;
-JE_byte enemyShapeTables[6]; /* [1..6] */
-JE_word superEnemy254Jump;
+Uint16 enemyOffset;
+Uint16 enemyOnScreen;
+Uint8 enemyShapeTables[6]; /* [1..6] */
+Uint16 superEnemy254Jump;
 
 /*EnemyShotData*/
-JE_boolean fireButtonHeld;
-JE_boolean enemyShotAvail[ENEMY_SHOT_MAX]; /* [1..Enemyshotmax] */
+bool fireButtonHeld;
+bool enemyShotAvail[ENEMY_SHOT_MAX]; /* [1..Enemyshotmax] */
 EnemyShotType enemyShot[ENEMY_SHOT_MAX]; /* [1..Enemyshotmax]  */
 
 /* Player Shot Data */
-JE_byte     zinglonDuration;
-JE_byte     astralDuration;
-JE_word     flareDuration;
-JE_boolean  flareStart;
-JE_shortint flareColChg;
-JE_byte     specialWait;
-JE_byte     nextSpecialWait;
-JE_boolean  spraySpecial;
-JE_byte     doIced;
-JE_boolean  infiniteShot;
+Uint8     zinglonDuration;
+Uint8     astralDuration;
+Uint16     flareDuration;
+bool  flareStart;
+Sint8 flareColChg;
+Uint8     specialWait;
+Uint8     nextSpecialWait;
+bool  spraySpecial;
+Uint8     doIced;
+bool  infiniteShot;
 
 /*PlayerData*/
-JE_boolean allPlayersGone; /*Both players dead and finished exploding*/
+bool allPlayersGone; /*Both players dead and finished exploding*/
 
 const uint shadowYDist = 10;
 
-JE_real optionSatelliteRotate;
+float optionSatelliteRotate;
 
-JE_integer optionAttachmentMove;
-JE_boolean optionAttachmentLinked, optionAttachmentReturn;
+Sint16 optionAttachmentMove;
+bool optionAttachmentLinked, optionAttachmentReturn;
 
 
-JE_byte chargeWait, chargeLevel, chargeMax, chargeGr, chargeGrWait;
+Uint8 chargeWait, chargeLevel, chargeMax, chargeGr, chargeGrWait;
 
-JE_word neat;
+Uint16 neat;
 
 
 /*ExplosionData*/
 explosion_type explosions[MAX_EXPLOSIONS]; /* [1..ExplosionMax] */
-JE_integer explosionFollowAmountX, explosionFollowAmountY;
+Sint16 explosionFollowAmountX, explosionFollowAmountY;
 
 /*Repeating Explosions*/
 rep_explosion_type rep_explosions[MAX_REPEATING_EXPLOSIONS]; /* [1..20] */
@@ -305,28 +305,28 @@ superpixel_type superpixels[MAX_SUPERPIXELS]; /* [0..MaxSP] */
 unsigned int last_superpixel;
 
 /*Temporary Numbers*/
-JE_byte temp, temp2, temp3;
-JE_word tempX, tempY;
-JE_word tempW;
+Uint8 temp, temp2, temp3;
+Uint16 tempX, tempY;
+Uint16 tempW;
 
-JE_boolean doNotSaveBackup;
+bool doNotSaveBackup;
 
-JE_word x, y;
-JE_integer b;
+Uint16 x, y;
+Sint16 b;
 
-JE_byte **BKwrap1to, **BKwrap2to, **BKwrap3to,
+Uint8 **BKwrap1to, **BKwrap2to, **BKwrap3to,
         **BKwrap1, **BKwrap2, **BKwrap3;
 
-JE_shortint specialWeaponFilter, specialWeaponFreq;
-JE_word     specialWeaponWpn;
-JE_boolean  linkToPlayer;
+Sint8 specialWeaponFilter, specialWeaponFreq;
+Uint16     specialWeaponWpn;
+bool  linkToPlayer;
 
-JE_word shipGr, shipGr2;
+Uint16 shipGr, shipGr2;
 Sprite2_array *shipGrPtr, *shipGr2ptr;
 
 void JE_getShipInfo( void )
 {
-	JE_boolean extraShip, extraShip2;
+	bool extraShip, extraShip2;
 
 	shipGrPtr = &shapes9;
 	shipGr2ptr = &shapes9;
@@ -336,7 +336,7 @@ void JE_getShipInfo( void )
 	extraShip = player[0].items.ship > 90;
 	if (extraShip)
 	{
-		JE_byte base = (player[0].items.ship - 91) * 15;
+		Uint8 base = (player[0].items.ship - 91) * 15;
 		shipGr = JE_SGr(player[0].items.ship - 90, &shipGrPtr);
 		player[0].armor = extraShips[base + 7];
 	}
@@ -349,7 +349,7 @@ void JE_getShipInfo( void )
 	extraShip2 = player[1].items.ship > 90;
 	if (extraShip2)
 	{
-		JE_byte base2 = (player[1].items.ship - 91) * 15;
+		Uint8 base2 = (player[1].items.ship - 91) * 15;
 		shipGr2 = JE_SGr(player[1].items.ship - 90, &shipGr2ptr);
 		player[1].armor = extraShips[base2 + 7]; /* bug? */
 	}
@@ -380,11 +380,11 @@ void JE_getShipInfo( void )
 	}
 }
 
-JE_word JE_SGr( JE_word ship, Sprite2_array **ptr )
+Uint16 JE_SGr( Uint16 ship, Sprite2_array **ptr )
 {
-	const JE_word GR[15] /* [1..15] */ = {233, 157, 195, 271, 81, 0, 119, 5, 43, 81, 119, 157, 195, 233, 271};
+	const Uint16 GR[15] /* [1..15] */ = {233, 157, 195, 271, 81, 0, 119, 5, 43, 81, 119, 157, 195, 233, 271};
 
-	JE_word tempW = extraShips[(ship - 1) * 15];
+	Uint16 tempW = extraShips[(ship - 1) * 15];
 	if (tempW > 7)
 		*ptr = extraShapes;
 
@@ -442,7 +442,7 @@ void JE_drawOptionLevel( void )
 	}
 }
 
-void JE_tyrianHalt( JE_byte code )
+void JE_tyrianHalt( Uint8 code )
 {
 	deinit_audio();
 	deinit_video();
@@ -501,7 +501,7 @@ void JE_tyrianHalt( JE_byte code )
 	exit(code);
 }
 
-void JE_specialComplete( JE_byte playerNum, JE_byte specialType )
+void JE_specialComplete( Uint8 playerNum, Uint8 specialType )
 {
 	nextSpecialWait = 0;
 	switch (special[specialType].stype)
@@ -676,7 +676,7 @@ void JE_specialComplete( JE_byte playerNum, JE_byte specialType )
 	}
 }
 
-void JE_doSpecialShot( JE_byte playerNum, uint *armor, uint *shield )
+void JE_doSpecialShot( Uint8 playerNum, uint *armor, uint *shield )
 {
 	if (player[0].items.special > 0)
 	{
@@ -871,8 +871,8 @@ void JE_doSpecialShot( JE_byte playerNum, uint *armor, uint *shield )
 void JE_setupExplosion( signed int x, signed int y, signed int delta_y, unsigned int type, bool fixed_position, bool follow_player )
 {
 	const struct {
-		JE_word sprite;
-		JE_byte ttl;
+		Uint16 sprite;
+		Uint8 ttl;
 	} explosion_data[53] /* [1..53] */ = {
 		{ 144,  7 },
 		{ 120, 12 },
@@ -957,7 +957,7 @@ void JE_setupExplosion( signed int x, signed int y, signed int delta_y, unsigned
 	}
 }
 
-void JE_setupExplosionLarge( JE_boolean enemyGround, JE_byte exploNum, JE_integer x, JE_integer y )
+void JE_setupExplosionLarge( bool enemyGround, Uint8 exploNum, Sint16 x, Sint16 y )
 {
 	if (y >= 0)
 	{
@@ -1026,7 +1026,7 @@ void JE_wipeShieldArmorBars( void )
 	}
 }
 
-JE_byte JE_playerDamage( JE_byte temp,
+Uint8 JE_playerDamage( Uint8 temp,
                          Player *this_player )
 {
 	int playerDamage = 0;
@@ -1091,7 +1091,7 @@ JE_byte JE_playerDamage( JE_byte temp,
 	return playerDamage;
 }
 
-JE_word JE_portConfigs( void )
+Uint16 JE_portConfigs( void )
 {
 	const uint player_index = twoPlayerMode ? 1 : 0;
 	return tempW = weaponPort[player[player_index].items.weapon[REAR_WEAPON].id].opnum;
@@ -1132,11 +1132,11 @@ void JE_drawArmor( void )
 	}
 }
 
-void JE_doSP( JE_word x, JE_word y, JE_word num, JE_byte explowidth, JE_byte color ) /* superpixels */
+void JE_doSP( Uint16 x, Uint16 y, Uint16 num, Uint8 explowidth, Uint8 color ) /* superpixels */
 {
 	for (temp = 0; temp < num; temp++)
 	{
-		JE_real tempr = mt_rand_lt1() * (2 * M_PI);
+		float tempr = mt_rand_lt1() * (2 * M_PI);
 		signed int tempy = roundf(cosf(tempr) * mt_rand_1() * explowidth);
 		signed int tempx = roundf(sinf(tempr) * mt_rand_1() * explowidth);
 

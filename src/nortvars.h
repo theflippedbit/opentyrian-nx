@@ -21,14 +21,14 @@
 
 #include "opentyr.h"
 
-extern JE_boolean inputDetected;
+extern bool inputDetected;
 
-JE_boolean JE_buttonPressed( void );
+bool JE_buttonPressed( void );
 
-JE_boolean JE_anyButton( void );
+bool JE_anyButton( void );
 
-void JE_dBar3( SDL_Surface *surface, JE_integer x,  JE_integer y,  JE_integer num,  JE_integer col );
-void JE_barDrawShadow( SDL_Surface *surface, JE_word x, JE_word y, JE_word res, JE_word col, JE_word amt, JE_word xsize, JE_word ysize );
+void JE_dBar3( SDL_Surface *surface, Sint16 x,  Sint16 y,  Sint16 num,  Sint16 col );
+void JE_barDrawShadow( SDL_Surface *surface, Uint16 x, Uint16 y, Uint16 res, Uint16 col, Uint16 amt, Uint16 xsize, Uint16 ysize );
 void JE_wipeKey( void );
 
 #endif /* NORTVARS_H */

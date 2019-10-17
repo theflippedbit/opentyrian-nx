@@ -30,42 +30,42 @@
 
 struct JE_StarType
 {
-	JE_integer spX, spY, spZ;
-	JE_integer lastX, lastY;
+	Sint16 spX, spY, spZ;
+	Sint16 lastX, lastY;
 };
 
 static int tempX, tempY;
-static JE_boolean run;
+static bool run;
 static struct JE_StarType star[starlib_MAX_STARS];
 
-static JE_byte setup;
-static JE_word stepCounter;
+static Uint8 setup;
+static Uint16 stepCounter;
 
-static JE_word nsp2;
-static JE_shortint nspVar2Inc;
+static Uint16 nsp2;
+static Sint8 nspVar2Inc;
 
 /* JE: new sprite pointer */
-static JE_real nsp;
-static JE_real nspVarInc;
-static JE_real nspVarVarInc;
+static float nsp;
+static float nspVarInc;
+static float nspVarVarInc;
 
-static JE_word changeTime;
-static JE_boolean doChange;
+static Uint16 changeTime;
+static bool doChange;
 
-static JE_boolean grayB;
+static bool grayB;
 
-static JE_integer starlib_speed;
-static JE_shortint speedChange;
+static Sint16 starlib_speed;
+static Sint8 speedChange;
 
-static JE_byte pColor;
+static Uint8 pColor;
 
 
 void JE_starlib_main( void )
 {
 	int off;
-	JE_word i;
-	JE_integer tempZ;
-	JE_byte tempCol;
+	Uint16 i;
+	Sint16 tempZ;
+	Uint8 tempCol;
 	struct JE_StarType *stars;
 	Uint8 *surf;
 
@@ -328,7 +328,7 @@ void JE_wackyCol( void )
 
 void JE_starlib_init( void )
 {
-	static JE_boolean initialized = false;
+	static bool initialized = false;
 
 	if (!initialized)
 	{
@@ -360,7 +360,7 @@ void JE_resetValues( void )
 	speedChange = 0;
 }
 
-void JE_changeSetup( JE_byte setupType )
+void JE_changeSetup( Uint8 setupType )
 {
 	stepCounter = 0;
 	changeTime = (mt_rand() % 1000);

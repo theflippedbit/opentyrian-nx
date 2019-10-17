@@ -31,15 +31,15 @@
 
 extern const int font_ascii[256];
 
-extern JE_byte textGlowFont, textGlowBrightness;
-extern JE_boolean levelWarningDisplay;
-extern JE_byte levelWarningLines;
+extern Uint8 textGlowFont, textGlowBrightness;
+extern bool levelWarningDisplay;
+extern Uint8 levelWarningLines;
 extern char levelWarningText[10][61];
-extern JE_boolean warningRed;
-extern JE_byte warningSoundDelay;
-extern JE_word armorShipDelay;
-extern JE_byte warningCol;
-extern JE_shortint warningColChange;
+extern bool warningRed;
+extern Uint8 warningSoundDelay;
+extern Uint16 armorShipDelay;
+extern Uint8 warningCol;
+extern Sint8 warningColChange;
 
 void JE_dString( SDL_Surface * screen, int x, int y, const char *s, unsigned int font );
 

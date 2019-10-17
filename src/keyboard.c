@@ -26,14 +26,14 @@
 #include <SDL.h>
 #include <stdio.h>
 
-JE_boolean ESCPressed;
+bool ESCPressed;
 
-JE_boolean newkey, newmouse, keydown, mousedown;
+bool newkey, newmouse, keydown, mousedown;
 SDL_Scancode lastkey_scan;
 SDL_Keymod lastkey_mod;
 Uint8 lastmouse_but;
 Uint16 lastmouse_x, lastmouse_y;
-JE_boolean mouse_pressed[3] = {false, false, false};
+bool mouse_pressed[3] = {false, false, false};
 Uint16 mouse_x, mouse_y;
 
 Uint8 keysactive[SDL_NUM_SCANCODES];
@@ -54,7 +54,7 @@ void flush_events_buffer( void )
 	while (SDL_PollEvent(&ev));
 }
 
-void wait_input( JE_boolean keyboard, JE_boolean mouse, JE_boolean joystick )
+void wait_input( bool keyboard, bool mouse, bool joystick )
 {
 	service_SDL_events(false);
 	while (!((keyboard && keydown) || (mouse && mousedown) || (joystick && joydown)))
@@ -70,7 +70,7 @@ void wait_input( JE_boolean keyboard, JE_boolean mouse, JE_boolean joystick )
 	}
 }
 
-void wait_noinput( JE_boolean keyboard, JE_boolean mouse, JE_boolean joystick )
+void wait_noinput( bool keyboard, bool mouse, bool joystick )
 {
 	service_SDL_events(false);
 	while ((keyboard && keydown) || (mouse && mousedown) || (joystick && joydown))
@@ -108,7 +108,7 @@ void input_grab( bool enable )
 #endif
 }
 
-JE_word JE_mousePosition( JE_word *mouseX, JE_word *mouseY )
+Uint16 JE_mousePosition( Uint16 *mouseX, Uint16 *mouseY )
 {
 	service_SDL_events(false);
 	*mouseX = mouse_x;
@@ -127,7 +127,7 @@ void set_mouse_position( int x, int y )
 	}
 }
 
-void service_SDL_events( JE_boolean clear_new )
+void service_SDL_events( bool clear_new )
 {
 	SDL_Event ev;
 	

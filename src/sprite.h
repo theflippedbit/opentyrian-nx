@@ -99,7 +99,7 @@ Sprite2_array;
 extern Sprite2_array eShapes[6];
 extern Sprite2_array shapesC1, shapes6, shapes9, shapesW2;
 
-void JE_loadCompShapes( Sprite2_array *, JE_char s );
+void JE_loadCompShapes( Sprite2_array *, char s );
 void JE_loadCompShapesB( Sprite2_array *, FILE *f );
 void free_sprite2s( Sprite2_array * );
 

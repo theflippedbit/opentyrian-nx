@@ -26,15 +26,15 @@
 extern bool has_mouse;
 extern bool mouse_has_three_buttons;
 
-extern JE_word lastMouseX, lastMouseY;
-extern JE_byte mouseCursor;
-extern JE_word mouseX, mouseY, mouseButton;
-extern JE_word mouseXB, mouseYB;
+extern Uint16 lastMouseX, lastMouseY;
+extern Uint8 mouseCursor;
+extern Uint16 mouseX, mouseY, mouseButton;
+extern Uint16 mouseXB, mouseYB;
 
-extern JE_byte mouseGrabShape[24 * 28];
+extern Uint8 mouseGrabShape[24 * 28];
 
-void JE_drawShapeTypeOne( JE_word x, JE_word y, JE_byte *shape );
-void JE_grabShapeTypeOne( JE_word x, JE_word y, JE_byte *shape );
+void JE_drawShapeTypeOne( Uint16 x, Uint16 y, Uint8 *shape );
+void JE_grabShapeTypeOne( Uint16 x, Uint16 y, Uint8 *shape );
 
 void JE_mouseStart( void );
 void JE_mouseReplace( void );

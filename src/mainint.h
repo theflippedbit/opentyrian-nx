@@ -27,30 +27,30 @@
 
 extern bool button[4]; // fire, left fire, right fire, mode swap
 
-extern JE_shortint constantLastX;
-extern JE_word textErase;
-extern JE_word upgradeCost;
-extern JE_word downgradeCost;
-extern JE_boolean performSave;
-extern JE_boolean jumpSection;
-extern JE_boolean useLastBank;
+extern Sint8 constantLastX;
+extern Uint16 textErase;
+extern Uint16 upgradeCost;
+extern Uint16 downgradeCost;
+extern bool performSave;
+extern bool jumpSection;
+extern bool useLastBank;
 
 extern bool pause_pressed, ingamemenu_pressed;
 
-/*void JE_textMenuWait ( JE_word waittime, JE_boolean dogamma );*/
+/*void JE_textMenuWait ( Uint16 waittime, bool dogamma );*/
 
 void JE_drawTextWindow( const char *text );
 void JE_initPlayerData( void );
 void JE_highScoreScreen( void );
-void JE_gammaCorrect_func( JE_byte *col, JE_real r );
-void JE_gammaCorrect( Palette *colorBuffer, JE_byte gamma );
-JE_boolean JE_gammaCheck( void );
-/* void JE_textMenuWait( JE_word *waitTime, JE_boolean doGamma ); /!\ In setup.h */
+void JE_gammaCorrect_func( Uint8 *col, float r );
+void JE_gammaCorrect( Palette *colorBuffer, Uint8 gamma );
+bool JE_gammaCheck( void );
+/* void JE_textMenuWait( Uint16 *waitTime, bool doGamma ); /!\ In setup.h */
 void JE_loadOrderingInfo( void );
 void JE_nextEpisode( void );
-void JE_helpSystem( JE_byte startTopic );
+void JE_helpSystem( Uint8 startTopic );
 void JE_doInGameSetup( void );
-JE_boolean JE_inGameSetup( void );
+bool JE_inGameSetup( void );
 void JE_inGameHelp( void );
 void JE_sortHighScores( void );
 void JE_highScoreCheck( void );
@@ -60,33 +60,33 @@ bool load_next_demo( void );
 bool replay_demo_keys( void );
 bool read_demo_keys( void );
 
-void JE_SFCodes( JE_byte playerNum_, JE_integer PX_, JE_integer PY_, JE_integer mouseX_, JE_integer mouseY_ );
+void JE_SFCodes( Uint8 playerNum_, Sint16 PX_, Sint16 PY_, Sint16 mouseX_, Sint16 mouseY_ );
 void JE_sort( void );
 
 long weapon_upgrade_cost( long base_cost, unsigned int power );
-ulong JE_getCost( JE_byte itemType, JE_word itemNum );
-JE_longint JE_getValue( JE_byte itemType, JE_word itemNum );
+ulong JE_getCost( Uint8 itemType, Uint16 itemNum );
+Sint32 JE_getValue( Uint8 itemType, Uint16 itemNum );
 ulong JE_totalScore( const Player * );
 
 void JE_drawPortConfigButtons( void );
-void JE_outCharGlow( JE_word x, JE_word y, const char *s );
+void JE_outCharGlow( Uint16 x, Uint16 y, const char *s );
 
 void JE_playCredits( void );
 void JE_endLevelAni( void );
-void JE_drawCube( SDL_Surface * screen, JE_word x, JE_word y, JE_byte filter, JE_byte brightness );
+void JE_drawCube( SDL_Surface * screen, Uint16 x, Uint16 y, Uint8 filter, Uint8 brightness );
 void JE_handleChat( void );
 bool str_pop_int( char *str, int *val );
 void JE_loadScreen( void );
-void JE_operation( JE_byte slot );
+void JE_operation( Uint8 slot );
 void JE_inGameDisplays( void );
 void JE_mainKeyboardInput( void );
 void JE_pauseGame( void );
 
-void JE_playerMovement( Player *this_player, JE_byte inputDevice, JE_byte playerNum, JE_word shipGr, Sprite2_array *shapes9ptr_, JE_word *mouseX, JE_word *mouseY );
+void JE_playerMovement( Player *this_player, Uint8 inputDevice, Uint8 playerNum, Uint16 shipGr, Sprite2_array *shapes9ptr_, Uint16 *mouseX, Uint16 *mouseY );
 void JE_mainGamePlayerFunctions( void );
-const char *JE_getName( JE_byte pnum );
+const char *JE_getName( Uint8 pnum );
 
-void JE_playerCollide( Player *this_player, JE_byte playerNum );
+void JE_playerCollide( Player *this_player, Uint8 playerNum );
 
 
 #endif /* MAININT_H */

@@ -29,21 +29,21 @@
 /*Special Background 2 and Background 3*/
 
 /*Back Pos 3*/
-JE_word backPos, backPos2, backPos3;
-JE_word backMove, backMove2, backMove3;
+Uint16 backPos, backPos2, backPos3;
+Uint16 backMove, backMove2, backMove3;
 
 /*Main Maps*/
-JE_word mapX, mapY, mapX2, mapX3, mapY2, mapY3;
-JE_byte **mapYPos, **mapY2Pos, **mapY3Pos;
-JE_word mapXPos, oldMapXOfs, mapXOfs, mapX2Ofs, mapX2Pos, mapX3Pos, oldMapX3Ofs, mapX3Ofs, tempMapXOfs;
+Uint16 mapX, mapY, mapX2, mapX3, mapY2, mapY3;
+Uint8 **mapYPos, **mapY2Pos, **mapY3Pos;
+Uint16 mapXPos, oldMapXOfs, mapXOfs, mapX2Ofs, mapX2Pos, mapX3Pos, oldMapX3Ofs, mapX3Ofs, tempMapXOfs;
 intptr_t mapXbpPos, mapX2bpPos, mapX3bpPos;
-JE_byte map1YDelay, map1YDelayMax, map2YDelay, map2YDelayMax;
+Uint8 map1YDelay, map1YDelayMax, map2YDelay, map2YDelayMax;
 
 
-JE_boolean  anySmoothies;
-JE_byte     smoothie_data[9]; /* [1..9] */
+bool  anySmoothies;
+Uint8     smoothie_data[9]; /* [1..9] */
 
-void JE_darkenBackground( JE_word neat )  /* wild detail level */
+void JE_darkenBackground( Uint16 neat )  /* wild detail level */
 {
 	Uint8 *s = VGAScreen->pixels; /* screen pointer, 8-bit specific */
 	int x, y;
@@ -255,7 +255,7 @@ void draw_background_3( SDL_Surface *surface )
 	}
 }
 
-void JE_filterScreen( JE_shortint col, JE_shortint int_)
+void JE_filterScreen( Sint8 col, Sint8 int_)
 {
 	Uint8 *s = NULL; /* screen pointer, 8-bit specific */
 	int x, y;
@@ -471,7 +471,7 @@ void blur_filter( SDL_Surface *dst, SDL_Surface *src )
 typedef struct
 {
 	Uint8 color;
-	JE_word position; // relies on overflow wrap-around
+	Uint16 position; // relies on overflow wrap-around
 	int speed;
 } StarfieldStar;
 

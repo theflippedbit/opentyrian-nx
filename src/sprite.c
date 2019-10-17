@@ -677,14 +677,14 @@ void JE_loadMainShapeTables( const char *shpfile )
 	
 	FILE *f = dir_fopen_die(data_dir(), shpfile, "rb");
 	
-	JE_word shpNumb;
-	JE_longint shpPos[SHP_NUM + 1]; // +1 for storing file length
+	Uint16 shpNumb;
+	Sint32 shpPos[SHP_NUM + 1]; // +1 for storing file length
 	
-	efread(&shpNumb, sizeof(JE_word), 1, f);
+	efread(&shpNumb, sizeof(Uint16), 1, f);
 	assert(shpNumb + 1u == COUNTOF(shpPos));
 	
 	for (unsigned int i = 0; i < shpNumb; ++i)
-		efread(&shpPos[i], sizeof(JE_longint), 1, f);
+		efread(&shpPos[i], sizeof(Sint32), 1, f);
 	
 	fseek(f, 0, SEEK_END);
 	for (unsigned int i = shpNumb; i < COUNTOF(shpPos); ++i)

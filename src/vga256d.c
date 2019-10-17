@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void JE_pix( SDL_Surface *surface, int x, int y, JE_byte c )
+void JE_pix( SDL_Surface *surface, int x, int y, Uint8 c )
 {
 	/* Bad things happen if we don't clip */
 	if (x <  surface->pitch && y <  surface->h)
@@ -40,7 +40,7 @@ void JE_pix( SDL_Surface *surface, int x, int y, JE_byte c )
 	}
 }
 
-void JE_pix3( SDL_Surface *surface, int x, int y, JE_byte c )
+void JE_pix3( SDL_Surface *surface, int x, int y, Uint8 c )
 {
 	/* Originally impemented as several direct accesses */
 	JE_pix(surface, x, y, c);
@@ -122,7 +122,7 @@ void JE_barBright( SDL_Surface *surface, int a, int b, int c, int d ) /* x1, y1,
 		{
 			for (j = 0; j < width; j++)
 			{
-				JE_byte al, ah;
+				Uint8 al, ah;
 				al = ah = vga[i + j];
 
 				ah &= 0xF0;

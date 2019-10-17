@@ -40,16 +40,6 @@
 typedef unsigned int uint;
 typedef unsigned long ulong;
 
-// Pascal types, yuck.
-typedef Sint32 JE_longint;
-typedef Sint16 JE_integer;
-typedef Sint8  JE_shortint;
-typedef Uint16 JE_word;
-typedef Uint8  JE_byte;
-typedef bool   JE_boolean;
-typedef char   JE_char;
-typedef float  JE_real;
-
 #ifdef TYRIAN2000
 #define TYRIAN_VERSION "2000"
 #else

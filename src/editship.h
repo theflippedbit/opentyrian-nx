@@ -22,12 +22,12 @@
 #include "opentyr.h"
 
 
-typedef JE_byte JE_ShipsType[154]; /* [1..154] */
+typedef Uint8 JE_ShipsType[154]; /* [1..154] */
 
-extern JE_boolean extraAvail;
+extern bool extraAvail;
 extern JE_ShipsType extraShips;
 extern void *extraShapes;
-extern JE_word extraShapeSize;
+extern Uint16 extraShapeSize;
 
 void JE_decryptShips( void );
 void JE_loadExtraShapes( void );
