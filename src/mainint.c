@@ -30,7 +30,6 @@
 #include "loudness.h"
 #include "mainint.h"
 #include "menus.h"
-#include "mouse.h"
 #include "mtrand.h"
 #include "network.h"
 #include "nortsong.h"
@@ -365,30 +364,9 @@ void JE_helpSystem( Uint8 startTopic )
 				JE_showVGA();
 
 				wait_delay();
-			} while (!newkey && !newmouse);
+			} while (!newkey);
 
-			wait_noinput(false, true, false);
-
-			if (newmouse)
-			{
-				switch (lastmouse_but)
-				{
-					case SDL_BUTTON_LEFT:
-						lastkey_scan = SDL_SCANCODE_RIGHT;
-						break;
-					case SDL_BUTTON_RIGHT:
-						lastkey_scan = SDL_SCANCODE_LEFT;
-						break;
-					case SDL_BUTTON_MIDDLE:
-						lastkey_scan = SDL_SCANCODE_ESCAPE;
-						break;
-				}
-				do
-				{
-					service_SDL_events(false);
-				} while (mousedown);
-				newkey = true;
-			}
+			wait_noinput(false, false);
 
 			if (newkey)
 			{
@@ -489,9 +467,6 @@ void JE_loadScreen( void )
 
 	tempstr = NULL;
 
-	free_sprite2s(&shapes6);
-	JE_loadCompShapes(&shapes6, '1');  // need arrow sprites
-
 	fade_black(10);
 	JE_loadPic(VGAScreen, 2, false);
 	JE_showVGA();
@@ -505,13 +480,6 @@ void JE_loadScreen( void )
 
 	do
 	{
-		while (mousedown)
-		{
-			service_SDL_events(false);
-			tempX = mouse_x;
-			tempY = mouse_y;
-		}
-
 		memcpy(VGAScreen->pixels, VGAScreen2->pixels, VGAScreen->pitch * VGAScreen->h);
 
 		JE_dString(VGAScreen, JE_fontCenter(miscText[38 + screen - 1], FONT_SHAPES), 5, miscText[38 + screen - 1], FONT_SHAPES);
@@ -603,15 +571,6 @@ void JE_loadScreen( void )
 				free(tempstr2);
 			}
 
-		}
-
-		if (screen == 2)
-		{
-			blit_sprite2x2(VGAScreen, 90, 180, shapes6, 279);
-		}
-		if (screen == 1)
-		{
-			blit_sprite2x2(VGAScreen, 220, 180, shapes6, 281);
 		}
 
 		helpBoxColor = 15;
@@ -880,9 +839,6 @@ void JE_highScoreScreen( void )
 	int quit;
 	char scoretemp[32];
 
-	free_sprite2s(&shapes6);
-	JE_loadCompShapes(&shapes6, '1');  // need arrow sprites
-
 	fade_black(10);
 	JE_loadPic(VGAScreen, 2, false);
 	JE_showVGA();
@@ -944,21 +900,8 @@ void JE_highScoreScreen( void )
 				JE_textShade(VGAScreen, 110, ((z+1) * 10) + 125 , saveFiles[temp + z].highScoreName, 15, 2, FULL_SHADE);
 			}
 
-			if (x > 1)
-			{
-				blit_sprite2x2(VGAScreen,  90, 180, shapes6, 279);
-			}
-
-			if ( ( (x < 2) && episodeAvail[2-1] ) || ( (x < 3) && episodeAvail[3-1] ) )
-			{
-				blit_sprite2x2(VGAScreen,  220, 180, shapes6, 281);
-			}
-
 			helpBoxColor = 15;
 			JE_helpBox(VGAScreen, 110, 182, miscText[57 - 1], 25);
-
-			/* {Dstring(fontcenter(misctext[57],_SmallFontShapes),190,misctext[57],_SmallFontShapes);} */
-
 			JE_showVGA();
 
 			tempW = 0;
@@ -1208,7 +1151,7 @@ bool JE_inGameSetup( void )
 		if (first)
 		{
 			first = false;
-			wait_noinput(false, false, true); // TODO: should up the joystick repeat temporarily instead
+			wait_noinput(false, true); // TODO: should up the joystick repeat temporarily instead
 		}
 
 		tempW = 0;
@@ -1458,9 +1401,6 @@ void JE_inGameHelp( void )
 
 void JE_highScoreCheck( void )
 {
-	free_sprite2s(&shapes6);
-	JE_loadCompShapes(&shapes6, '1');  // need mouse cursor sprite
-
 	Sint32 temp_score;
 
 	for (int temp_p = 0; temp_p < (twoPlayerMode ? 2 : 1); ++temp_p)
@@ -1503,7 +1443,7 @@ void JE_highScoreCheck( void )
 				strcpy(saveFiles[i].highScoreName, saveFiles[i - 1].highScoreName);
 			}
 
-			wait_noinput(false, true, false);
+			wait_noinput(false, false);
 
 			JE_clr256(VGAScreen);
 			JE_showVGA();
@@ -1566,40 +1506,26 @@ void JE_highScoreCheck( void )
 						{
 							setjasondelay(1);
 
-							JE_mouseStart();
 							JE_showVGA();
 							if (fadein)
 							{
 								fade_palette(colors, 15, 0, 255);
 								fadein = false;
 							}
-							JE_mouseReplace();
 
 							push_joysticks_as_keyboard();
 							service_wait_delay();
 
-							if (newkey || newmouse)
+							if (newkey)
 								break;
 						}
 
-					} while (!newkey && !newmouse && !new_text);
+					} while (!newkey && !new_text);
 
 					if (!playing)
 						play_song(31);
 
-					if (mouseButton > 0)
-					{
-						if (mouseX > 56 && mouseX < 142 && mouseY > 123 && mouseY < 149)
-						{
-							quit = true;
-						}
-						else if (mouseX > 151 && mouseX < 237 && mouseY > 123 && mouseY < 149)
-						{
-							quit = true;
-							cancel = true;
-						}
-					}
-					else if (new_text)
+					if (new_text)
 					{
 						for (size_t ti = 0U; last_text[ti] != '\0'; ++ti)
 						{
@@ -1680,7 +1606,7 @@ void JE_highScoreCheck( void )
 				JE_showVGA();
 
 				if (frameCountMax != 0)
-					wait_input(true, true, true);
+					wait_input(true, true);
 
 				fade_black(15);
 			}
@@ -2290,7 +2216,7 @@ void JE_endLevelAni( void )
 		} while (!(JE_anyButton() || (frameCountMax == 0 && temp == 1)));
 	}
 
-	wait_noinput(false, false, true); // TODO: should up the joystick repeat temporarily instead
+	wait_noinput(false, true); // TODO: should up the joystick repeat temporarily instead
 
 	fade_black(15);
 	JE_clr256(VGAScreen);
@@ -2355,7 +2281,7 @@ void JE_operation( Uint8 slot )
 
 		flash = 8 * 16 + 10;
 
-		wait_noinput(false, true, false);
+		wait_noinput(false, false);
 
 		JE_barShade(VGAScreen, 65, 55, 255, 155);
 
@@ -2394,31 +2320,15 @@ void JE_operation( Uint8 slot )
 					push_joysticks_as_keyboard();
 					service_wait_delay();
 
-					JE_mouseStart();
 					JE_showVGA();
-					JE_mouseReplace();
 
-					if (newkey || newmouse || new_text)
+					if (newkey || new_text)
 						break;
 				}
 			}
-			while (!newkey && !newmouse && !new_text);
+			while (!newkey && !new_text);
 
-			if (mouseButton > 0)
-			{
-				if (lastMouseX > 56 && lastMouseX < 142 && lastMouseY > 123 && lastMouseY < 149)
-				{
-					quit = true;
-					JE_saveGame(slot, stemp);
-					JE_playSampleNum(S_SELECT);
-				}
-				else if (lastMouseX > 151 && lastMouseX < 237 && lastMouseY > 123 && lastMouseY < 149)
-				{
-					quit = true;
-					JE_playSampleNum(S_SPRING);
-				}
-			}
-			else if (new_text)
+		    if (new_text)
 			{
 				for (size_t ti = 0U; last_text[ti] != '\0'; ++ti)
 				{
@@ -2461,7 +2371,7 @@ void JE_operation( Uint8 slot )
 		}
 	}
 
-	wait_noinput(false, true, false);
+	wait_noinput(false, false);
 }
 
 void JE_inGameDisplays( void )
@@ -2788,9 +2698,7 @@ void JE_mainKeyboardInput( void )
 void JE_pauseGame( void )
 {
 	bool done = false;
-	Uint16 mouseX, mouseY;
 
-	//tempScreenSeg = VGAScreenSeg; // sega000
 	if (!superPause)
 	{
 		JE_dString(VGAScreenSeg, 120, 90, miscText[22], FONT_SHAPES);
@@ -2825,7 +2733,7 @@ void JE_pauseGame( void )
 	}
 #endif
 
-	wait_noinput(false, false, true); // TODO: should up the joystick repeat temporarily instead
+	wait_noinput(false, true); // TODO: should up the joystick repeat temporarily instead
 
 	do
 	{
@@ -2834,8 +2742,7 @@ void JE_pauseGame( void )
 		push_joysticks_as_keyboard();
 		service_SDL_events(true);
 
-		if ((newkey && lastkey_scan != SDL_SCANCODE_LCTRL && lastkey_scan != SDL_SCANCODE_RCTRL && lastkey_scan != SDL_SCANCODE_LALT && lastkey_scan != SDL_SCANCODE_RALT)
-		    || JE_mousePosition(&mouseX, &mouseY) > 0)
+		if ((newkey && lastkey_scan != SDL_SCANCODE_LCTRL && lastkey_scan != SDL_SCANCODE_RCTRL && lastkey_scan != SDL_SCANCODE_LALT && lastkey_scan != SDL_SCANCODE_RALT) )
 		{
 #ifdef WITH_NETWORK
 			if (isNetworkGame)
@@ -2882,13 +2789,10 @@ void JE_pauseGame( void )
 	//skipStarShowVGA = true;
 }
 
-void JE_playerMovement( Player *this_player,
-                        Uint8 inputDevice,
-                        Uint8 playerNum_,
-                        Uint16 shipGr_,
-                        Sprite2_array *shapes9ptr_,
-                        Uint16 *mouseX_, Uint16 *mouseY_ )
+void JE_playerMovement( Player *this_player, Uint8 inputDevice, Uint8 playerNum_, Uint16 shipGr_, Sprite2_array *shapes9ptr_ )
 {
+
+    Uint16 mouseX_, mouseY_;
 	Sint16 mouseXC, mouseYC;
 	Sint16 accelXC, accelYC;
 
@@ -3035,8 +2939,8 @@ redo:
 
 	if (!endLevel)
 	{
-		*mouseX_ = this_player->x;
-		*mouseY_ = this_player->y;
+		mouseX_ = this_player->x;
+		mouseY_ = this_player->y;
 		button[1-1] = false;
 		button[2-1] = false;
 		button[3-1] = false;
@@ -3099,91 +3003,14 @@ redo:
 
 				service_SDL_events(false);
 
-				/* mouse input */
-				if ((inputDevice == 0 || inputDevice == 2) && has_mouse)
-				{
-					button[0] |= mouse_pressed[0];
-					button[1] |= mouse_pressed[1];
-					button[2] |= mouse_has_three_buttons ? mouse_pressed[2] : mouse_pressed[1];
-
-					if (input_grab_enabled)
-					{
-						mouseXC += mouse_x - 159;
-						mouseYC += mouse_y - 100;
-					}
-
-					if ((!isNetworkGame || playerNum_ == thisPlayerNum)
-					    && (!galagaMode || (playerNum_ == 2 || !twoPlayerMode || player[1].exploding_ticks > 0)))
-					{
-						set_mouse_position(159, 100);
-					}
-				}
-
-				/* keyboard input */
-				if ((inputDevice == 0 || inputDevice == 1) && !play_demo)
-				{
-					if (keysactive[keySettings[0]])
-						this_player->y -= CURRENT_KEY_SPEED;
-					if (keysactive[keySettings[1]])
-						this_player->y += CURRENT_KEY_SPEED;
-
-					if (keysactive[keySettings[2]])
-						this_player->x -= CURRENT_KEY_SPEED;
-					if (keysactive[keySettings[3]])
-						this_player->x += CURRENT_KEY_SPEED;
-
-					button[0] = button[0] || keysactive[keySettings[4]];
-					button[3] = button[3] || keysactive[keySettings[5]];
-					button[1] = button[1] || keysactive[keySettings[6]];
-					button[2] = button[2] || keysactive[keySettings[7]];
-
-					if (constantPlay)
-					{
-						for (unsigned int i = 0; i < 4; i++)
-							button[i] = true;
-
-						++this_player->y;
-						this_player->x += constantLastX;
-					}
-
-					// TODO: check if demo recording still works
-					if (record_demo)
-					{
-						bool new_input = false;
-
-						for (unsigned int i = 0; i < 8; i++)
-						{
-							bool temp = demo_keys & (1 << i);
-							if (temp != keysactive[keySettings[i]])
-								new_input = true;
-						}
-
-						demo_keys_wait++;
-
-						if (new_input)
-						{
-							demo_keys_wait = SDL_Swap16(demo_keys_wait);
-							efwrite(&demo_keys_wait, sizeof(Uint16), 1, demo_file);
-
-							demo_keys = 0;
-							for (unsigned int i = 0; i < 8; i++)
-								demo_keys |= keysactive[keySettings[i]] ? (1 << i) : 0;
-
-							fputc(demo_keys, demo_file);
-
-							demo_keys_wait = 0;
-						}
-					}
-				}
-
 				if (smoothies[9-1])
 				{
-					*mouseY_ = this_player->y - (*mouseY_ - this_player->y);
+					mouseY_ = this_player->y - (mouseY_ - this_player->y);
 					mouseYC = -mouseYC;
 				}
 
-				accelXC += this_player->x - *mouseX_;
-				accelYC += this_player->y - *mouseY_;
+				accelXC += this_player->x - mouseX_;
+				accelYC += this_player->y - mouseY_;
 
 				if (mouseXC > 30)
 					mouseXC = 30;
@@ -3224,14 +3051,14 @@ redo:
 					buttons |= button[i];
 				}
 
-				SDLNet_Write16(this_player->x - *mouseX_, &packet_state_out[0]->data[4]);
-				SDLNet_Write16(this_player->y - *mouseY_, &packet_state_out[0]->data[6]);
+				SDLNet_Write16(this_player->x - mouseX_, &packet_state_out[0]->data[4]);
+				SDLNet_Write16(this_player->y - mouseY_, &packet_state_out[0]->data[6]);
 				SDLNet_Write16(accelXC,                   &packet_state_out[0]->data[8]);
 				SDLNet_Write16(accelYC,                   &packet_state_out[0]->data[10]);
 				SDLNet_Write16(buttons,                   &packet_state_out[0]->data[12]);
 
-				this_player->x = *mouseX_;
-				this_player->y = *mouseY_;
+				this_player->x = mouseX_;
+				this_player->y = mouseY_;
 
 				button[0] = false;
 				button[1] = false;
@@ -3286,7 +3113,7 @@ redo:
 #endif
 
 		/*Street-Fighter codes*/
-		JE_SFCodes(playerNum_, this_player->x, this_player->y, *mouseX_, *mouseY_);
+		JE_SFCodes(playerNum_, this_player->x, this_player->y, mouseX_, mouseY_);
 
 		if (moveOk)
 		{
@@ -3294,7 +3121,7 @@ redo:
 
 			/*Linking Routines*/
 
-			if (twoPlayerMode && !twoPlayerLinked && this_player->x == *mouseX_ && this_player->y == *mouseY_
+			if (twoPlayerMode && !twoPlayerLinked && this_player->x == mouseX_ && this_player->y == mouseY_
 			    && abs(player[0].x - player[1].x) < 8 && abs(player[0].y - player[1].y) < 8
 			    && player[0].is_alive && player[1].is_alive && !galagaMode)
 			{
@@ -3305,7 +3132,7 @@ redo:
 				twoPlayerLinked = false;
 
 			if (twoPlayerMode && twoPlayerLinked && playerNum_ == 2
-			    && (this_player->x != *mouseX_ || this_player->y != *mouseY_))
+			    && (this_player->x != mouseX_ || this_player->y != mouseY_))
 			{
 				if (button[0])
 				{
@@ -3317,10 +3144,10 @@ redo:
 					{
 						float tempR;
 
-						if (abs(this_player->x - *mouseX_) > abs(this_player->y - *mouseY_))
-							tempR = (this_player->x - *mouseX_ > 0) ? M_PI_2 : (M_PI + M_PI_2);
+						if (abs(this_player->x - mouseX_) > abs(this_player->y - mouseY_))
+							tempR = (this_player->x - mouseX_ > 0) ? M_PI_2 : (M_PI + M_PI_2);
 						else
-							tempR = (this_player->y - *mouseY_ > 0) ? 0 : M_PI;
+							tempR = (this_player->y - mouseY_ > 0) ? 0 : M_PI;
 
 						if (fabsf(linkGunDirec - tempR) < 0.3f)
 							linkGunDirec = tempR;
@@ -3410,14 +3237,14 @@ redo:
 			{
 				if (this_player->sidekick[LEFT_SIDEKICK].style == 0)
 				{
-					this_player->sidekick[LEFT_SIDEKICK].x = *mouseX_ - 14;
-					this_player->sidekick[LEFT_SIDEKICK].y = *mouseY_;
+					this_player->sidekick[LEFT_SIDEKICK].x = mouseX_ - 14;
+					this_player->sidekick[LEFT_SIDEKICK].y = mouseY_;
 				}
 
 				if (this_player->sidekick[RIGHT_SIDEKICK].style == 0)
 				{
-					this_player->sidekick[RIGHT_SIDEKICK].x = *mouseX_ + 16;
-					this_player->sidekick[RIGHT_SIDEKICK].y = *mouseY_;
+					this_player->sidekick[RIGHT_SIDEKICK].x = mouseX_ + 16;
+					this_player->sidekick[RIGHT_SIDEKICK].y = mouseY_;
 				}
 			}
 
@@ -3459,7 +3286,7 @@ redo:
 			this_player->y += this_player->y_velocity;
 
 			// if player moved, add new ship x, y history entry
-			if (this_player->x - *mouseX_ != 0 || this_player->y - *mouseY_ != 0)
+			if (this_player->x - mouseX_ != 0 || this_player->y - mouseY_ != 0)
 			{
 				for (uint i = 1; i < COUNTOF(player->old_x); ++i)
 				{
@@ -3483,11 +3310,11 @@ redo:
 
 			// turret direction marker/shield
 			shotMultiPos[SHOT_MISC] = 0;
-			b = player_shot_create(0, SHOT_MISC, this_player->x + 1 + roundf(sinf(linkGunDirec + 0.2f) * 26), this_player->y + roundf(cosf(linkGunDirec + 0.2f) * 26), *mouseX_, *mouseY_, 148, playerNum_);
+			b = player_shot_create(0, SHOT_MISC, this_player->x + 1 + roundf(sinf(linkGunDirec + 0.2f) * 26), this_player->y + roundf(cosf(linkGunDirec + 0.2f) * 26), 148, playerNum_);
 			shotMultiPos[SHOT_MISC] = 0;
-			b = player_shot_create(0, SHOT_MISC, this_player->x + 1 + roundf(sinf(linkGunDirec - 0.2f) * 26), this_player->y + roundf(cosf(linkGunDirec - 0.2f) * 26), *mouseX_, *mouseY_, 148, playerNum_);
+			b = player_shot_create(0, SHOT_MISC, this_player->x + 1 + roundf(sinf(linkGunDirec - 0.2f) * 26), this_player->y + roundf(cosf(linkGunDirec - 0.2f) * 26), 148, playerNum_);
 			shotMultiPos[SHOT_MISC] = 0;
-			b = player_shot_create(0, SHOT_MISC, this_player->x + 1 + roundf(sinf(linkGunDirec) * 26), this_player->y + roundf(cosf(linkGunDirec) * 26), *mouseX_, *mouseY_, 147, playerNum_);
+			b = player_shot_create(0, SHOT_MISC, this_player->x + 1 + roundf(sinf(linkGunDirec) * 26), this_player->y + roundf(cosf(linkGunDirec) * 26), 147, playerNum_);
 
 			if (shotRepeat[SHOT_REAR] > 0)
 			{
@@ -3496,7 +3323,7 @@ redo:
 			else if (button[1-1])
 			{
 				shotMultiPos[SHOT_REAR] = 0;
-				b = player_shot_create(0, SHOT_REAR, this_player->x + 1 + roundf(sinf(linkGunDirec) * 20), this_player->y + roundf(cosf(linkGunDirec) * 20), *mouseX_, *mouseY_, linkGunWeapons[this_player->items.weapon[REAR_WEAPON].id-1], playerNum_);
+				b = player_shot_create(0, SHOT_REAR, this_player->x + 1 + roundf(sinf(linkGunDirec) * 20), this_player->y + roundf(cosf(linkGunDirec) * 20), linkGunWeapons[this_player->items.weapon[REAR_WEAPON].id-1], playerNum_);
 				player_shot_set_direction(b, this_player->items.weapon[REAR_WEAPON].id, linkGunDirec);
 			}
 		}
@@ -3530,7 +3357,7 @@ redo:
 			this_player->y = 10;
 
 		// Determines the ship banking sprite to display, depending on horizontal velocity and acceleration
-		int ship_banking = this_player->x_velocity / 2 + (this_player->x - *mouseX_) / 6;
+		int ship_banking = this_player->x_velocity / 2 + (this_player->x - mouseX_) / 6;
 		ship_banking = MAX(-2, MIN(ship_banking, 2));
 
 		int ship_sprite = ship_banking * 2 + shipGr_;
@@ -3641,7 +3468,7 @@ redo:
 					}
 					else
 					{
-						b = player_shot_create(0, SHOT_NORTSPARKS, tempW + (mt_rand() % 8) - 4, this_player->y + (mt_rand() % 8) - 4, *mouseX_, *mouseY_, 671, 1);
+						b = player_shot_create(0, SHOT_NORTSPARKS, tempW + (mt_rand() % 8) - 4, this_player->y + (mt_rand() % 8) - 4, 671, 1);
 						shotRepeat[SHOT_NORTSPARKS] = abs(ship_banking) - 1;
 					}
 				}
@@ -3740,7 +3567,7 @@ redo:
 								const uint item_power = galagaMode ? 0 : this_player->items.weapon[temp].power - 1,
 								           item_mode = (temp == REAR_WEAPON) ? this_player->weapon_mode - 1 : 0;
 
-								b = player_shot_create(item, temp, this_player->x, this_player->y, *mouseX_, *mouseY_, weaponPort[item].op[item_mode][item_power], playerNum_);
+								b = player_shot_create(item, temp, this_player->x, this_player->y, weaponPort[item].op[item_mode][item_power], playerNum_);
 							}
 						}
 					}
@@ -3794,7 +3621,7 @@ redo:
 					else if (button[1-1] && (!twoPlayerLinked || chargeLevel > 0))
 					{
 						shotMultiPos[SHOT_P2_CHARGE] = 0;
-						b = player_shot_create(16, SHOT_P2_CHARGE, this_player->x, this_player->y, *mouseX_, *mouseY_, chargeGunWeapons[player[1].items.weapon[REAR_WEAPON].id-1] + chargeLevel, playerNum_);
+						b = player_shot_create(16, SHOT_P2_CHARGE, this_player->x, this_player->y, chargeGunWeapons[player[1].items.weapon[REAR_WEAPON].id-1] + chargeLevel, playerNum_);
 
 						if (chargeLevel > 0)
 							fill_rectangle_xy(VGAScreenSeg, 269, 107 + (chargeLevel - 1) * 3, 275, 108 + (chargeLevel - 1) * 3, 193);
@@ -3819,7 +3646,7 @@ redo:
 					{
 						--player[temp-1].superbombs;
 						shotMultiPos[SHOT_P1_SUPERBOMB + temp-1] = 0;
-						b = player_shot_create(16, SHOT_P1_SUPERBOMB + temp-1, this_player->x, this_player->y, *mouseX_, *mouseY_, 535, playerNum_);
+						b = player_shot_create(16, SHOT_P1_SUPERBOMB + temp-1, this_player->x, this_player->y, 535, playerNum_);
 					}
 				}
 
@@ -3974,7 +3801,7 @@ redo:
 
 									if (button[1 + i] && this_player->sidekick[i].ammo > 0)
 									{
-										b = player_shot_create(this_option->wport, shot_i, this_player->sidekick[i].x, this_player->sidekick[i].y, *mouseX_, *mouseY_, this_option->wpnum + this_player->sidekick[i].charge, playerNum_);
+										b = player_shot_create(this_option->wport, shot_i, this_player->sidekick[i].x, this_player->sidekick[i].y, this_option->wpnum + this_player->sidekick[i].charge, playerNum_);
 
 										--this_player->sidekick[i].ammo;
 										if (this_player->sidekick[i].charge > 0)
@@ -3995,7 +3822,7 @@ redo:
 								{
 									if (button[0] || button[1 + i])
 									{
-										b = player_shot_create(this_option->wport, shot_i, this_player->sidekick[i].x, this_player->sidekick[i].y, *mouseX_, *mouseY_, this_option->wpnum + this_player->sidekick[i].charge, playerNum_);
+										b = player_shot_create(this_option->wport, shot_i, this_player->sidekick[i].x, this_player->sidekick[i].y, this_option->wpnum + this_player->sidekick[i].charge, playerNum_);
 
 										if (this_player->sidekick[i].charge > 0)
 										{
@@ -4054,7 +3881,7 @@ redo:
 
 void JE_mainGamePlayerFunctions( void )
 {
-	/*PLAYER MOVEMENT/MOUSE ROUTINES*/
+	/*PLAYER MOVEMENT ROUTINES*/
 
 	if (endLevel && levelEnd > 0)
 	{
@@ -4069,18 +3896,12 @@ void JE_mainGamePlayerFunctions( void )
 
 	if (twoPlayerMode)
 	{
-		JE_playerMovement(&player[0],
-		                  !galagaMode ? inputDevice[0] : 0, 1, shipGr, shipGrPtr,
-		                  &mouseX, &mouseY);
-		JE_playerMovement(&player[1],
-		                  !galagaMode ? inputDevice[1] : 0, 2, shipGr2, shipGr2ptr,
-		                  &mouseXB, &mouseYB);
+		JE_playerMovement(&player[0], !galagaMode ? inputDevice[0] : 0, 1, shipGr, shipGrPtr);
+		JE_playerMovement(&player[1], !galagaMode ? inputDevice[1] : 0, 2, shipGr2, shipGr2ptr);
 	}
 	else
 	{
-		JE_playerMovement(&player[0],
-		                  0, 1, shipGr, shipGrPtr,
-		                  &mouseX, &mouseY);
+		JE_playerMovement(&player[0], 0, 1, shipGr, shipGrPtr);
 	}
 
 	/* == Parallax Map Scrolling == */
@@ -4396,7 +4217,7 @@ void JE_playerCollide( Player *this_player, Uint8 playerNum_ )
 					{
 						// picked up orbiting asteroid killer
 						shotMultiPos[SHOT_MISC] = 0;
-						b = player_shot_create(0, SHOT_MISC, this_player->x, this_player->y, mouseX, mouseY, 104, playerNum_);
+						b = player_shot_create(0, SHOT_MISC, this_player->x, this_player->y, 104, playerNum_);
 						shotAvail[z] = 0;
 					}
 					else if (evalue == -4)

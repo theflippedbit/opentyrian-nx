@@ -296,8 +296,8 @@ void JE_starlib_main( void )
 				doChange = !doChange;
 				break;
 			case 'P':
-				wait_noinput(true, false, false);
-				wait_input(true, false, false);
+				wait_noinput(true, false);
+				wait_input(true, false);
 				break;
 			default:
 				break;

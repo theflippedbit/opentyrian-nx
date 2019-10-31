@@ -23,7 +23,6 @@
 #include "lds_play.h"
 #include "loudness.h"
 #include "mainint.h"
-#include "mouse.h"
 #include "mtrand.h"
 #include "network.h"
 #include "nortsong.h"
@@ -509,9 +508,9 @@ void JE_specialComplete( Uint8 playerNum, Uint8 specialType )
 		/*Weapon*/
 		case 1:
 			if (playerNum == 1)
-				b = player_shot_create(0, SHOT_SPECIAL2, player[0].x, player[0].y, mouseX, mouseY, special[specialType].wpn, playerNum);
+				b = player_shot_create(0, SHOT_SPECIAL2, player[0].x, player[0].y, special[specialType].wpn, playerNum);
 			else
-				b = player_shot_create(0, SHOT_SPECIAL2, player[1].x, player[1].y, mouseX, mouseY, special[specialType].wpn, playerNum);
+				b = player_shot_create(0, SHOT_SPECIAL2, player[1].x, player[1].y, special[specialType].wpn, playerNum);
 
 			shotRepeat[SHOT_SPECIAL] = shotRepeat[SHOT_SPECIAL2];
 			break;
@@ -632,7 +631,7 @@ void JE_specialComplete( Uint8 playerNum, Uint8 specialType )
 			if (superArcadeMode > 0 && superArcadeMode <= SA)
 			{
 				shotRepeat[SHOT_SPECIAL] = 250;
-				b = player_shot_create(0, SHOT_SPECIAL2, player[0].x, player[0].y, mouseX, mouseY, 707, 1);
+				b = player_shot_create(0, SHOT_SPECIAL2, player[0].x, player[0].y, 707, 1);
 				player[0].invulnerable_ticks = 100;
 			}
 			break;
@@ -815,12 +814,12 @@ void JE_doSpecialShot( Uint8 playerNum, uint *armor, uint *shield )
 			{
 				if (shotRepeat[SHOT_SPECIAL] == 0)
 				{
-					b = player_shot_create(0, SHOT_SPECIAL, player[0].x, player[0].y, mouseX, mouseY, specialWeaponWpn, playerNum);
+					b = player_shot_create(0, SHOT_SPECIAL, player[0].x, player[0].y, specialWeaponWpn, playerNum);
 				}
 			}
 			else
 			{
-				b = player_shot_create(0, SHOT_SPECIAL, mt_rand() % 280, mt_rand() % 180, mouseX, mouseY, specialWeaponWpn, playerNum);
+				b = player_shot_create(0, SHOT_SPECIAL, mt_rand() % 280, mt_rand() % 180, specialWeaponWpn, playerNum);
 			}
 
 			if (spraySpecial && b != MAX_PWEAPON)

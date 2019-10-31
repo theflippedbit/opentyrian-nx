@@ -302,7 +302,7 @@ bool player_shot_move_and_draw(
 	return true;
 }
 
-Sint16 player_shot_create( Uint16 portNum, uint bay_i, Uint16 PX, Uint16 PY, Uint16 mouseX, Uint16 mouseY, Uint16 wpNum, Uint8 playerNum )
+Sint16 player_shot_create( Uint16 portNum, uint bay_i, Uint16 PX, Uint16 PY, Uint16 wpNum, Uint8 playerNum )
 {
 	static const Uint8 soundChannel[11] /* [1..11] */ = {0, 2, 4, 4, 2, 2, 5, 5, 1, 4, 1};
 
@@ -425,7 +425,7 @@ Sint16 player_shot_create( Uint16 portNum, uint bay_i, Uint16 PX, Uint16 PY, Uin
 
 		if (del == 99 || del == 98)
 		{
-			tmp_by = PX - mouseX;
+			tmp_by = PX;
 			if (tmp_by < -5)
 				tmp_by = -5;
 			else if (tmp_by > 5)
@@ -435,7 +435,7 @@ Sint16 player_shot_create( Uint16 portNum, uint bay_i, Uint16 PX, Uint16 PY, Uin
 
 		if (del == 99 || del == 100)
 		{
-			tmp_by = PY - mouseY - weapon->sy[shotMultiPos[bay_i]-1];
+			tmp_by = PY - weapon->sy[shotMultiPos[bay_i]-1];
 			if (tmp_by < -4)
 				tmp_by = -4;
 			else if (tmp_by > 4)

@@ -30,7 +30,6 @@
 #include "lvllib.h"
 #include "menus.h"
 #include "mainint.h"
-#include "mouse.h"
 #include "mtrand.h"
 #include "network.h"
 #include "nortsong.h"
@@ -673,7 +672,7 @@ start_level:
 			stop_song();
 			fade_black(10);
 
-			wait_noinput(true, true, true);
+			wait_noinput(true, true);
 		}
 	}
 
@@ -810,7 +809,7 @@ start_level_first:
 		player[i].invulnerable_ticks = 100;
 	}
 
-	newkey = newmouse = false;
+	newkey = false;
 
 	/* Initialize Level Data and Debug Mode */
 	levelEnd = 255;
@@ -1484,7 +1483,7 @@ level_loop:
 						if (chain > 0)
 						{
 							shotMultiPos[SHOT_MISC] = 0;
-							b = player_shot_create(0, SHOT_MISC, tempShotX, tempShotY, mouseX, mouseY, chain, playerNum);
+							b = player_shot_create(0, SHOT_MISC, tempShotX, tempShotY, chain, playerNum);
 							shotAvail[z] = 0;
 							goto draw_player_shot_loop_end;
 						}
@@ -2081,9 +2080,6 @@ draw_player_shot_loop_end:
 
 	/*-------      DEbug      ---------*/
 	debugTime = SDL_GetTicks();
-	tempW = lastmouse_but;
-	tempX = mouse_x;
-	tempY = mouse_y;
 
 	if (debug)
 	{
@@ -2167,7 +2163,6 @@ draw_player_shot_loop_end:
 				else
 					JE_dString(VGAScreen, 120, 60, miscText[21], FONT_SHAPES); // game over
 
-				set_mouse_position(159, 100);
 				if (firstGameOver)
 				{
 					if (!play_demo)
@@ -2182,7 +2177,7 @@ draw_player_shot_loop_end:
 				{
 					push_joysticks_as_keyboard();
 					service_SDL_events(true);
-					if ((newkey || button[0] || button[1] || button[2]) || newmouse)
+					if (newkey || button[0] || button[1] || button[2])
 					{
 						reallyEndLevel = true;
 					}
@@ -2199,7 +2194,7 @@ draw_player_shot_loop_end:
 		push_joysticks_as_keyboard();
 		service_SDL_events(false);
 
-		if (newkey || newmouse)
+		if (newkey)
 		{
 			reallyEndLevel = true;
 
@@ -2721,7 +2716,7 @@ new_game:
 								fade_palette(colors, 50, 0, 255);
 
 								if (!constantPlay)
-									wait_input(true, true, true);
+									wait_input(true, true);
 							}
 
 							jumpSection = true;
@@ -3460,8 +3455,8 @@ bool JE_titleScreen( bool animate )
 								JE_playSampleNum(V_DANGER);
 								JE_showVGA();
 
-								wait_noinput(true, true, true);
-								wait_input(true, true, true);
+								wait_noinput(true, true);
+								wait_input(true, true);
 
 								JE_initEpisode(1);
 								constantDie = false;
@@ -3495,7 +3490,7 @@ bool JE_titleScreen( bool animate )
 									JE_showVGA();
 									fade_palette(colors, 50, 0, 255);
 
-									wait_input(true, true, true);
+									wait_input(true, true);
 
 									twoPlayerMode = false;
 									onePlayerAction = true;
@@ -3637,7 +3632,7 @@ void intro_logos( void )
 	fade_palette(colors, 50, 0, 255);
 
 	setjasondelay(200);
-	wait_delayorinput(true, true, true);
+	wait_delayorinput(true, true);
 
 	fade_black(10);
 
@@ -3647,7 +3642,7 @@ void intro_logos( void )
 	fade_palette(colors, 10, 0, 255);
 
 	setjasondelay(200);
-	wait_delayorinput(true, true, true);
+	wait_delayorinput(true, true);
 
 	fade_black(10);
 }

@@ -49,7 +49,7 @@ int delaycount2( void );
 
 void wait_delay( void );
 void service_wait_delay( void );
-void wait_delayorinput( bool keyboard, bool mouse, bool joystick );
+void wait_delayorinput( bool keyboard, bool joystick );
 
 void JE_resetTimerInt( void );
 void JE_setTimerInt( void );

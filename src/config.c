@@ -185,6 +185,7 @@ Uint8    superArcadeMode;
 Uint8    superArcadePowerUp;
 
 float linkGunDirec;
+// todo fix this when removing keyboard..
 Uint8 inputDevice[2] = { 1, 2 }; // 0:any  1:keyboard  2:mouse  3+:joystick
 
 Uint8 secretHint;

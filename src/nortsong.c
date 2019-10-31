@@ -87,10 +87,10 @@ void service_wait_delay( void )
 	}
 }
 
-void wait_delayorinput( bool keyboard, bool mouse, bool joystick )
+void wait_delayorinput( bool keyboard, bool joystick )
 {
 	service_SDL_events(true);
-	while (SDL_GetTicks() < target && !((keyboard && keydown) || (mouse && mousedown) || (joystick && joydown)))
+	while (SDL_GetTicks() < target && !((keyboard && keydown) || (joystick && joydown)))
 	{
 		SDL_Delay(SDL_GetTicks() - target > SDL_POLL_INTERVAL ? SDL_POLL_INTERVAL : SDL_GetTicks() - target);
 		push_joysticks_as_keyboard();

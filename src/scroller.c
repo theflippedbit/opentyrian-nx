@@ -141,7 +141,7 @@ void scroller_sine( const struct about_text_type text[] )
 
 	fade_black(10);
 
-	wait_noinput(true, true, true);
+	wait_noinput(true, true);
 
 	play_song(40); // BEER
 

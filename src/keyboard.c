@@ -28,13 +28,9 @@
 
 bool ESCPressed;
 
-bool newkey, newmouse, keydown, mousedown;
+bool newkey, keydown;
 SDL_Scancode lastkey_scan;
 SDL_Keymod lastkey_mod;
-Uint8 lastmouse_but;
-Uint16 lastmouse_x, lastmouse_y;
-bool mouse_pressed[3] = {false, false, false};
-Uint16 mouse_x, mouse_y;
 
 Uint8 keysactive[SDL_NUM_SCANCODES];
 
@@ -54,10 +50,10 @@ void flush_events_buffer( void )
 	while (SDL_PollEvent(&ev));
 }
 
-void wait_input( bool keyboard, bool mouse, bool joystick )
+void wait_input( bool keyboard, bool joystick )
 {
 	service_SDL_events(false);
-	while (!((keyboard && keydown) || (mouse && mousedown) || (joystick && joydown)))
+	while (!((keyboard && keydown) || (joystick && joydown)))
 	{
 		SDL_Delay(SDL_POLL_INTERVAL);
 		push_joysticks_as_keyboard();
@@ -70,10 +66,10 @@ void wait_input( bool keyboard, bool mouse, bool joystick )
 	}
 }
 
-void wait_noinput( bool keyboard, bool mouse, bool joystick )
+void wait_noinput( bool keyboard, bool joystick )
 {
 	service_SDL_events(false);
-	while ((keyboard && keydown) || (mouse && mousedown) || (joystick && joydown))
+	while ((keyboard && keydown) || (joystick && joydown))
 	{
 		SDL_Delay(SDL_POLL_INTERVAL);
 		poll_joysticks();
@@ -90,8 +86,8 @@ void init_keyboard( void )
 {
 	//SDL_EnableKeyRepeat(500, 60); TODO Find if SDL2 has an equivalent.
 
-	newkey = newmouse = false;
-	keydown = mousedown = false;
+	newkey = false;
+	keydown = false;
 }
 
 void input_grab( bool enable )
@@ -108,25 +104,6 @@ void input_grab( bool enable )
 #endif
 }
 
-Uint16 JE_mousePosition( Uint16 *mouseX, Uint16 *mouseY )
-{
-	service_SDL_events(false);
-	*mouseX = mouse_x;
-	*mouseY = mouse_y;
-	return mousedown ? lastmouse_but : 0;
-}
-
-void set_mouse_position( int x, int y )
-{
-	if (input_grab_enabled)
-	{
-		mouse_x = x;
-		mouse_y = y;
-		map_screen_to_window_pos(&x, &y);
-		SDL_WarpMouseInWindow(main_window, x, y);
-	}
-}
-
 void service_SDL_events( bool clear_new )
 {
 	SDL_Event ev;
@@ -134,7 +111,6 @@ void service_SDL_events( bool clear_new )
 	if (clear_new)
 	{
 		newkey = false;
-		newmouse = false;
 		new_text = false;
 	}
 	
@@ -147,23 +123,6 @@ void service_SDL_events( bool clear_new )
 					input_grab(false);
 				else if (ev.window.event == SDL_WINDOWEVENT_RESIZED)
 					video_on_win_resize();
-				break;
-			
-			case SDL_MOUSEMOTION:
-				map_window_to_screen_pos(&ev.motion.x, &ev.motion.y);
-				if (ev.motion.x < 0) {
-					ev.motion.x = 0;
-				} else if (ev.motion.x >= vga_width) {
-					ev.motion.x = vga_width - 1;
-				}
-
-				if (ev.motion.y < 0) {
-					ev.motion.y = 0;
-				} else if (ev.motion.y >= vga_height) {
-					ev.motion.y = vga_height - 1;
-				}
-				mouse_x = ev.motion.x;
-				mouse_y = ev.motion.y;
 				break;
 
 			case SDL_KEYDOWN:
@@ -200,47 +159,17 @@ void service_SDL_events( bool clear_new )
 				lastkey_mod = ev.key.keysym.mod;
 				keydown = true;
 				return;
+
 			case SDL_KEYUP:
 				keysactive[ev.key.keysym.scancode] = 0;
 				keydown = false;
 				return;
 
-			case SDL_MOUSEBUTTONDOWN:
-				if (!input_grab_enabled)
-				{
-					input_grab(true);
-					break;
-				}
-				// intentional fall-though
-			case SDL_MOUSEBUTTONUP:
-				map_window_to_screen_pos(&ev.button.x, &ev.button.y);
-				if (ev.type == SDL_MOUSEBUTTONDOWN)
-				{
-					newmouse = true;
-					lastmouse_but = ev.button.button;
-					lastmouse_x = ev.button.x;
-					lastmouse_y = ev.button.y;
-					mousedown = true;
-				}
-				else
-				{
-					mousedown = false;
-				}
-				switch (ev.button.button)
-				{
-					case SDL_BUTTON_LEFT:
-						mouse_pressed[0] = mousedown; break;
-					case SDL_BUTTON_RIGHT:
-						mouse_pressed[1] = mousedown; break;
-					case SDL_BUTTON_MIDDLE:
-						mouse_pressed[2] = mousedown; break;
-				}
-				break;
-
 			case SDL_TEXTINPUT:
 				SDL_strlcpy(last_text, ev.text.text, COUNTOF(last_text));
 				new_text = true;
 				break;
+
 			case SDL_TEXTEDITING:
 				break;
 

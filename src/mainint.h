@@ -82,7 +82,7 @@ void JE_inGameDisplays( void );
 void JE_mainKeyboardInput( void );
 void JE_pauseGame( void );
 
-void JE_playerMovement( Player *this_player, Uint8 inputDevice, Uint8 playerNum, Uint16 shipGr, Sprite2_array *shapes9ptr_, Uint16 *mouseX, Uint16 *mouseY );
+void JE_playerMovement( Player *this_player, Uint8 inputDevice, Uint8 playerNum, Uint16 shipGr, Sprite2_array *shapes9ptr_ );
 void JE_mainGamePlayerFunctions( void );
 const char *JE_getName( Uint8 pnum );
 

@@ -51,8 +51,6 @@ bool player_shot_move_and_draw(
 		Uint16* out_special_radiusw, Uint16* out_special_radiush );
 
 /** Creates a player shot. */
-Sint16 player_shot_create( Uint16 portnum, uint shot_i, Uint16 px, Uint16 py,
-                        Uint16 mousex, Uint16 mousey,
-                        Uint16 wpnum, Uint8 playernum );
+Sint16 player_shot_create( Uint16 portnum, uint shot_i, Uint16 px, Uint16 py, Uint16 wpnum, Uint8 playernum );
 
 #endif // SHOTS_H

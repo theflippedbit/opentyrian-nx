@@ -11,9 +11,7 @@ Copy `opentyrian.nro` and the `data` folder to your `switch` folder on your micr
 
 # Controls
 Left Stick	- ship movement  
-A - fire weapons  
-B - toggle rear weapon mode  
-Y - fire left/right sidekick
-
-# Issues
-* In the top menu a single press of a button press will register as two presses
+A - fire weapons (select in menus)
+B - toggle rear weapon mode (back in menus)
+X - fire right sidekick
+Y - fire left sidekick

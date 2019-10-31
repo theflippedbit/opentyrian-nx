@@ -33,7 +33,7 @@ bool JE_anyButton( void )
 {
 	poll_joysticks();
 	service_SDL_events(true);
-	return newkey || mousedown || joydown;
+	return newkey || joydown;
 }
 
 void JE_dBar3( SDL_Surface *surface, Sint16 x,  Sint16 y,  Sint16 num,  Sint16 col )

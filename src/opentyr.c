@@ -160,7 +160,7 @@ void opentyrian_menu( void )
 		{
 			fade_in = false;
 			fade_palette(colors, 20, 0, 255);
-			wait_noinput(true, false, false);
+			wait_noinput(true, false);
 		}
 
 		tempW = 0;
@@ -344,7 +344,6 @@ int main( int argc, char *argv[] )
 	init_video();
 	init_keyboard();
 	init_joysticks();
-	printf("assuming mouse detected\n"); // SDL can't tell us if there isn't one
 
 	if (xmas && (!dir_file_exists(data_dir(), "tyrianc.shp") || !dir_file_exists(data_dir(), "voicesc.snd")))
 	{
