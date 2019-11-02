@@ -285,7 +285,8 @@ void init_joysticks( void )
 			       SDL_JoystickNumAxes(joystick[j].handle),
 			       SDL_JoystickNumButtons(joystick[j].handle),
 			       SDL_JoystickNumHats(joystick[j].handle));
-			
+
+			// if can't load saved joystick assignments, reset them to the default
 			if (!load_joystick_assignments(&opentyrian_config, j))
 				reset_joystick_assignments(j);
 		}
@@ -318,41 +319,80 @@ void deinit_joysticks( void )
 void reset_joystick_assignments( int j )
 {
 	assert(j < joysticks);
-	
-	// defaults: first 2 axes, first hat, first 6 buttons
+
+    // clear assignments for all joysticks
 	for (uint a = 0; a < COUNTOF(joystick[j].assignment); a++)
 	{
-		// clear assignments
 		for (uint i = 0; i < COUNTOF(joystick[j].assignment[a]); i++)
 			joystick[j].assignment[a][i].type = NONE;
-		
-		if (a < 4)
-		{
-			if (SDL_JoystickNumAxes(joystick[j].handle) >= 2)
-			{
-				joystick[j].assignment[a][0].type = AXIS;
-				joystick[j].assignment[a][0].num = (a + 1) % 2;
-				joystick[j].assignment[a][0].negative_axis = (a == 0 || a == 3);
-			}
-			
-			if (SDL_JoystickNumHats(joystick[j].handle) >= 1)
-			{
-				joystick[j].assignment[a][1].type = HAT;
-				joystick[j].assignment[a][1].num = 0;
-				joystick[j].assignment[a][1].x_axis = (a == 1 || a == 3);
-				joystick[j].assignment[a][1].negative_axis = (a == 0 || a == 3);
-			}
-		}
-		else
-		{
-			if (a - 4 < (unsigned)SDL_JoystickNumButtons(joystick[j].handle))
-			{
-				joystick[j].assignment[a][0].type = BUTTON;
-				joystick[j].assignment[a][0].num = a - 4;
-			}
-		}
 	}
-	
+
+    // ** Nintendo Switch specific **
+    // todo will need updating when getting two players working - SDL_NumJoysticks is reporting there's 8 joysticks?
+
+    // 0-3: directions
+
+    // up
+    joystick[j].assignment[0][0].type = BUTTON;
+    joystick[j].assignment[0][0].num = 13; // DPADU
+
+    joystick[j].assignment[0][1].type = BUTTON;
+    joystick[j].assignment[0][1].num = 17; // LSTICKU
+
+    // right
+    joystick[j].assignment[1][0].type = BUTTON;
+    joystick[j].assignment[1][0].num = 14; // DPADR
+
+    joystick[j].assignment[1][1].type = BUTTON;
+    joystick[j].assignment[1][1].num = 18; // LSTICKR
+
+    // down
+    joystick[j].assignment[2][0].type = BUTTON;
+    joystick[j].assignment[2][0].num = 15; // DPADD
+
+    joystick[j].assignment[2][1].type = BUTTON;
+    joystick[j].assignment[2][1].num = 19; // LSTICKD
+
+    // left
+    joystick[j].assignment[3][0].type = BUTTON;
+    joystick[j].assignment[3][0].num = 12; // DPADL
+
+    joystick[j].assignment[3][1].type = BUTTON;
+    joystick[j].assignment[3][1].num = 16; // LSTICKL
+
+    // 4-9: actions
+
+    // fire
+    joystick[j].assignment[4][0].type = BUTTON;
+    joystick[j].assignment[4][0].num = 0; // A
+
+    // change fire
+    joystick[j].assignment[5][0].type = BUTTON;
+    joystick[j].assignment[5][0].num = 1; // B
+
+    // left sidekick
+    joystick[j].assignment[6][0].type = BUTTON;
+    joystick[j].assignment[6][0].num = 3; // Y
+
+    joystick[j].assignment[6][1].type = BUTTON;
+    joystick[j].assignment[6][1].num = 8; // LTRIGGER
+
+    // right sidekick
+    joystick[j].assignment[7][0].type = BUTTON;
+    joystick[j].assignment[7][0].num = 2; // X
+
+    joystick[j].assignment[7][1].type = BUTTON;
+    joystick[j].assignment[7][1].num = 9; // RTRIGGER
+
+    // menu
+    joystick[j].assignment[8][0].type = BUTTON;
+    joystick[j].assignment[8][0].num = 11; // MINUS
+
+    // pause
+    joystick[j].assignment[9][0].type = BUTTON;
+    joystick[j].assignment[9][0].num = 10; // PLUS
+
+
 	joystick[j].analog = false;
 	joystick[j].sensitivity = 5;
 	joystick[j].threshold = 5;
