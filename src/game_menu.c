@@ -2612,6 +2612,7 @@ void JE_menuFunction( Uint8 select )
 				joystick[joystick_config].threshold %= 11;
 			}
 			break;
+		// options / Joystick / Reset To Defaults
 		case 16:
 			reset_joystick_assignments(joystick_config);
 			break;
