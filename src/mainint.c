@@ -1773,7 +1773,7 @@ bool read_demo_keys( void )
 }
 
 /*Street Fighter codes*/
-void JE_SFCodes( Uint8 playerNum_, Sint16 PX_, Sint16 PY_, Sint16 mouseX_, Sint16 mouseY_ )
+void JE_SFCodes( Uint8 playerNum_, Sint16 PX_, Sint16 PY_, Sint16 playerX_, Sint16 playerY_ )
 {
 	Uint8 temp, temp2, temp3, temp4, temp5;
 
@@ -1788,14 +1788,14 @@ void JE_SFCodes( Uint8 playerNum_, Sint16 PX_, Sint16 PY_, Sint16 mouseX_, Sint1
 	if (ship < 15)
 	{
 
-		temp2 = (mouseY_ > PY_) +    /*UP*/
-		        (mouseY_ < PY_) +    /*DOWN*/
-		        (PX_ < mouseX_) +    /*LEFT*/
-		        (PX_ > mouseX_);     /*RIGHT*/
-		temp = (mouseY_ > PY_) * 1 + /*UP*/
-		       (mouseY_ < PY_) * 2 + /*DOWN*/
-		       (PX_ < mouseX_) * 3 + /*LEFT*/
-		       (PX_ > mouseX_) * 4;  /*RIGHT*/
+		temp2 = (playerY_ > PY_) +    /*UP*/
+		        (playerY_ < PY_) +    /*DOWN*/
+		        (PX_ < playerX_) +    /*LEFT*/
+		        (PX_ > playerX_);     /*RIGHT*/
+		temp = (playerY_ > PY_) * 1 + /*UP*/
+		       (playerY_ < PY_) * 2 + /*DOWN*/
+		       (PX_ < playerX_) * 3 + /*LEFT*/
+		       (PX_ > playerX_) * 4;  /*RIGHT*/
 
 		if (temp == 0) // no direction being pressed
 		{
@@ -2792,8 +2792,8 @@ void JE_pauseGame( void )
 void JE_playerMovement( Player *this_player, Uint8 inputDevice, Uint8 playerNum_, Uint16 shipGr_, Sprite2_array *shapes9ptr_ )
 {
 
-    Uint16 mouseX_, mouseY_;
-	Sint16 mouseXC, mouseYC;
+    Uint16 playerX_, playerY_;
+	Sint16 playerXC, playerYC;
 	Sint16 accelXC, accelYC;
 
 	if (playerNum_ == 2 || !twoPlayerMode)
@@ -2819,8 +2819,8 @@ redo:
 		inputDevice = 0;
 	}
 
-	mouseXC = 0;
-	mouseYC = 0;
+	playerXC = 0;
+	playerYC = 0;
 	accelXC = 0;
 	accelYC = 0;
 
@@ -2939,8 +2939,8 @@ redo:
 
 	if (!endLevel)
 	{
-		mouseX_ = this_player->x;
-		mouseY_ = this_player->y;
+		playerX_ = this_player->x;
+		playerY_ = this_player->y;
 		button[1-1] = false;
 		button[2-1] = false;
 		button[3-1] = false;
@@ -2980,8 +2980,8 @@ redo:
 
 						if (joystick[j].analog)
 						{
-							mouseXC += joystick_axis_reduce(j, joystick[j].x);
-							mouseYC += joystick_axis_reduce(j, joystick[j].y);
+							playerXC += joystick_axis_reduce(j, joystick[j].x);
+							playerYC += joystick_axis_reduce(j, joystick[j].y);
 
 							link_gun_analog = joystick_analog_angle(j, &link_gun_angle);
 						}
@@ -3005,38 +3005,38 @@ redo:
 
 				if (smoothies[9-1])
 				{
-					mouseY_ = this_player->y - (mouseY_ - this_player->y);
-					mouseYC = -mouseYC;
+					playerY_ = this_player->y - (playerY_ - this_player->y);
+					playerYC = -playerYC;
 				}
 
-				accelXC += this_player->x - mouseX_;
-				accelYC += this_player->y - mouseY_;
+				accelXC += this_player->x - playerX_;
+				accelYC += this_player->y - playerY_;
 
-				if (mouseXC > 30)
-					mouseXC = 30;
-				else if (mouseXC < -30)
-					mouseXC = -30;
-				if (mouseYC > 30)
-					mouseYC = 30;
-				else if (mouseYC < -30)
-					mouseYC = -30;
+				if (playerXC > 30)
+					playerXC = 30;
+				else if (playerXC < -30)
+					playerXC = -30;
+				if (playerYC > 30)
+					playerYC = 30;
+				else if (playerYC < -30)
+					playerYC = -30;
 
-				if (mouseXC > 0)
-					this_player->x += (mouseXC + 3) / 4;
-				else if (mouseXC < 0)
-					this_player->x += (mouseXC - 3) / 4;
-				if (mouseYC > 0)
-					this_player->y += (mouseYC + 3) / 4;
-				else if (mouseYC < 0)
-					this_player->y += (mouseYC - 3) / 4;
+				if (playerXC > 0)
+					this_player->x += (playerXC + 3) / 4;
+				else if (playerXC < 0)
+					this_player->x += (playerXC - 3) / 4;
+				if (playerYC > 0)
+					this_player->y += (playerYC + 3) / 4;
+				else if (playerYC < 0)
+					this_player->y += (playerYC - 3) / 4;
 
-				if (mouseXC > 3)
+				if (playerXC > 3)
 					accelXC++;
-				else if (mouseXC < -2)
+				else if (playerXC < -2)
 					accelXC--;
-				if (mouseYC > 2)
+				if (playerYC > 2)
 					accelYC++;
-				else if (mouseYC < -2)
+				else if (playerYC < -2)
 					accelYC--;
 
 			}   /*endLevel*/
@@ -3051,14 +3051,14 @@ redo:
 					buttons |= button[i];
 				}
 
-				SDLNet_Write16(this_player->x - mouseX_, &packet_state_out[0]->data[4]);
-				SDLNet_Write16(this_player->y - mouseY_, &packet_state_out[0]->data[6]);
+				SDLNet_Write16(this_player->x - playerX_, &packet_state_out[0]->data[4]);
+				SDLNet_Write16(this_player->y - playerY_, &packet_state_out[0]->data[6]);
 				SDLNet_Write16(accelXC,                   &packet_state_out[0]->data[8]);
 				SDLNet_Write16(accelYC,                   &packet_state_out[0]->data[10]);
 				SDLNet_Write16(buttons,                   &packet_state_out[0]->data[12]);
 
-				this_player->x = mouseX_;
-				this_player->y = mouseY_;
+				this_player->x = playerX_;
+				this_player->y = playerY_;
 
 				button[0] = false;
 				button[1] = false;
@@ -3113,7 +3113,7 @@ redo:
 #endif
 
 		/*Street-Fighter codes*/
-		JE_SFCodes(playerNum_, this_player->x, this_player->y, mouseX_, mouseY_);
+		JE_SFCodes(playerNum_, this_player->x, this_player->y, playerX_, playerY_);
 
 		if (moveOk)
 		{
@@ -3121,7 +3121,7 @@ redo:
 
 			/*Linking Routines*/
 
-			if (twoPlayerMode && !twoPlayerLinked && this_player->x == mouseX_ && this_player->y == mouseY_
+			if (twoPlayerMode && !twoPlayerLinked && this_player->x == playerX_ && this_player->y == playerY_
 			    && abs(player[0].x - player[1].x) < 8 && abs(player[0].y - player[1].y) < 8
 			    && player[0].is_alive && player[1].is_alive && !galagaMode)
 			{
@@ -3132,7 +3132,7 @@ redo:
 				twoPlayerLinked = false;
 
 			if (twoPlayerMode && twoPlayerLinked && playerNum_ == 2
-			    && (this_player->x != mouseX_ || this_player->y != mouseY_))
+			    && (this_player->x != playerX_ || this_player->y != playerY_))
 			{
 				if (button[0])
 				{
@@ -3144,10 +3144,10 @@ redo:
 					{
 						float tempR;
 
-						if (abs(this_player->x - mouseX_) > abs(this_player->y - mouseY_))
-							tempR = (this_player->x - mouseX_ > 0) ? M_PI_2 : (M_PI + M_PI_2);
+						if (abs(this_player->x - playerX_) > abs(this_player->y - playerY_))
+							tempR = (this_player->x - playerX_ > 0) ? M_PI_2 : (M_PI + M_PI_2);
 						else
-							tempR = (this_player->y - mouseY_ > 0) ? 0 : M_PI;
+							tempR = (this_player->y - playerY_ > 0) ? 0 : M_PI;
 
 						if (fabsf(linkGunDirec - tempR) < 0.3f)
 							linkGunDirec = tempR;
@@ -3237,14 +3237,14 @@ redo:
 			{
 				if (this_player->sidekick[LEFT_SIDEKICK].style == 0)
 				{
-					this_player->sidekick[LEFT_SIDEKICK].x = mouseX_ - 14;
-					this_player->sidekick[LEFT_SIDEKICK].y = mouseY_;
+					this_player->sidekick[LEFT_SIDEKICK].x = playerX_ - 14;
+					this_player->sidekick[LEFT_SIDEKICK].y = playerY_;
 				}
 
 				if (this_player->sidekick[RIGHT_SIDEKICK].style == 0)
 				{
-					this_player->sidekick[RIGHT_SIDEKICK].x = mouseX_ + 16;
-					this_player->sidekick[RIGHT_SIDEKICK].y = mouseY_;
+					this_player->sidekick[RIGHT_SIDEKICK].x = playerX_ + 16;
+					this_player->sidekick[RIGHT_SIDEKICK].y = playerY_;
 				}
 			}
 
@@ -3286,7 +3286,7 @@ redo:
 			this_player->y += this_player->y_velocity;
 
 			// if player moved, add new ship x, y history entry
-			if (this_player->x - mouseX_ != 0 || this_player->y - mouseY_ != 0)
+			if (this_player->x - playerX_ != 0 || this_player->y - playerY_ != 0)
 			{
 				for (uint i = 1; i < COUNTOF(player->old_x); ++i)
 				{
@@ -3357,7 +3357,7 @@ redo:
 			this_player->y = 10;
 
 		// Determines the ship banking sprite to display, depending on horizontal velocity and acceleration
-		int ship_banking = this_player->x_velocity / 2 + (this_player->x - mouseX_) / 6;
+		int ship_banking = this_player->x_velocity / 2 + (this_player->x - playerX_) / 6;
 		ship_banking = MAX(-2, MIN(ship_banking, 2));
 
 		int ship_sprite = ship_banking * 2 + shipGr_;

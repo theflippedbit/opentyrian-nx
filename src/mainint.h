@@ -60,7 +60,7 @@ bool load_next_demo( void );
 bool replay_demo_keys( void );
 bool read_demo_keys( void );
 
-void JE_SFCodes( Uint8 playerNum_, Sint16 PX_, Sint16 PY_, Sint16 mouseX_, Sint16 mouseY_ );
+void JE_SFCodes( Uint8 playerNum_, Sint16 PX_, Sint16 PY_, Sint16 playerX_, Sint16 playerY_ );
 void JE_sort( void );
 
 long weapon_upgrade_cost( long base_cost, unsigned int power );
