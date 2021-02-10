@@ -30,3 +30,6 @@ X / Right Trigger - Fire right sidekick
 Y / Left Trigger - Fire left sidekick  
 Plus - Pause  
 Minus - In Game Menu
+
+## Contributors
+* bladeSk: https://github.com/bladeSk
